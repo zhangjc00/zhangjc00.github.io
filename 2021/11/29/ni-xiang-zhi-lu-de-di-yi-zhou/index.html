@@ -470,8 +470,20 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="修改汇编代码"><a href="#修改汇编代码" class="headerlink" title="修改汇编代码"></a>修改汇编代码</h2><h3 id="直接跳转到生成flag的函数"><a href="#直接跳转到生成flag的函数" class="headerlink" title="直接跳转到生成flag的函数"></a>直接跳转到生成flag的函数</h3><p> 题目是来自Bugku里面的一道入门题 <a target="_blank" rel="noopener" href="https://ctf.bugku.com/challenges/detail/id/116.html">游戏过关</a>  查壳反汇编不用说了，这道题是让你输入一些数字让程序最终执行到输出flag的函数<br>如果你游戏水平够高你也可以直接通过玩游戏来获取flag，不然的话还是修改汇编代码来的直接，找到main函数，在几个call  sub_45A7BE指令里面随便选一个修改为call  sub_45E940，保存运行即可，当然了前提是你能找到main函数和打印的flag的函数，再次运行exe文件即可得到flag<br><img src="http://pic.yupoo.com/wfscjz/1639f889/big.png"></p>
-
+                <h2 id="修改汇编代码"><a href="#修改汇编代码" class="headerlink" title="修改汇编代码"></a>修改汇编代码</h2><h3 id="直接跳转到生成flag的函数"><a href="#直接跳转到生成flag的函数" class="headerlink" title="直接跳转到生成flag的函数"></a>直接跳转到生成flag的函数</h3><p> 题目是来自 <a target="_blank" rel="noopener" href="https://ctf.bugku.com/">Bugku</a> 里面的一道入门题 <a target="_blank" rel="noopener" href="https://ctf.bugku.com/challenges/detail/id/116.html">游戏过关</a>  查壳反汇编不用说了，这道题是让你输入一些数字让程序最终执行到输出flag的函数<br>如果你游戏水平够高你也可以直接通过玩游戏来获取flag，不然的话还是修改汇编代码来的直接，找到main函数，在几个call  sub_45A7BE指令里面随便选一个修改为call  sub_45E940，保存运行即可，当然了前提是你能找到main函数和打印的flag的函数，再次运行exe文件即可得到flag</p>
+<p><img src="http://pic.yupoo.com/wfscjz/1639f889/big.png" alt="pic1"></p>
+<h2 id="安卓逆向"><a href="#安卓逆向" class="headerlink" title="安卓逆向"></a>安卓逆向</h2><h3 id="记一下自己逆向路上遇到的第一道安卓逆向题"><a href="#记一下自己逆向路上遇到的第一道安卓逆向题" class="headerlink" title="记一下自己逆向路上遇到的第一道安卓逆向题"></a>记一下自己逆向路上遇到的第一道安卓逆向题</h3><p>题目时来自 <a target="_blank" rel="noopener" href="https://ctf.bugku.com/">Bugku</a> 里的一入门题 <a target="_blank" rel="noopener" href="https://ctf.bugku.com/challenges/detail/id/136.html">signin</a>,先在模拟器里面运行一下看看效果<br>    <img src="https://img2020.cnblogs.com/blog/2199580/202101/2199580-20210128195118556-1845855328.png" alt="pic2"></p>
+<style>
+    img[alt="pic2"]{
+        height:500px;
+    }
+</style>
+<p>猜测是一个输入字符然后验证的程序，我们用jeb打开apk文件，找到main函数按Q反编译成java代码<br><img src="https://img2020.cnblogs.com/blog/2199580/202101/2199580-20210128203054626-393559032.png" alt="pic3"></p>
+<style>
+    img[alt="pic3"]{
+        height:500px;
+    }
+</style>
                 
             </div>
             <hr/>

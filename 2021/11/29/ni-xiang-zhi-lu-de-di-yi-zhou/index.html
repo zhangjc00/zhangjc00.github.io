@@ -471,14 +471,54 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="修改汇编代码"><a href="#修改汇编代码" class="headerlink" title="修改汇编代码"></a>修改汇编代码</h2><h3 id="直接跳转到生成flag的函数"><a href="#直接跳转到生成flag的函数" class="headerlink" title="直接跳转到生成flag的函数"></a>直接跳转到生成flag的函数</h3><p> 题目是来自 <a target="_blank" rel="noopener" href="https://ctf.bugku.com/">Bugku</a> 里面的一道入门题 <a target="_blank" rel="noopener" href="https://ctf.bugku.com/challenges/detail/id/116.html">游戏过关</a>  查壳反汇编不用说了，这道题是让你输入一些数字让程序最终执行到输出flag的函数<br>如果你游戏水平够高你也可以直接通过玩游戏来获取flag，不然的话还是修改汇编代码来的直接，找到main函数，在几个call  sub_45A7BE指令里面随便选一个修改为call  sub_45E940，保存运行即可，当然了前提是你能找到main函数和打印的flag的函数，再次运行exe文件即可得到flag</p>
+                <h2 id="修改汇编代码"><a href="#修改汇编代码" class="headerlink" title="修改汇编代码"></a>修改汇编代码</h2><h3 id="直接跳转到生成flag的函数"><a href="#直接跳转到生成flag的函数" class="headerlink" title="直接跳转到生成flag的函数"></a>直接跳转到生成flag的函数</h3><ul>
+<li>题目是来自 <a target="_blank" rel="noopener" href="https://ctf.bugku.com/">Bugku</a> 里面的一道入门题 <a target="_blank" rel="noopener" href="https://ctf.bugku.com/challenges/detail/id/116.html">游戏过关</a>  查壳反汇编不用说了，这道题是让你输入一些数字让程序最终执行到输出flag的函数<br>如果你游戏水平够高你也可以直接通过玩游戏来获取flag，不然的话还是修改汇编代码来的直接，找到main函数，在几个call  sub_45A7BE指令里面随便选一个修改为call  sub_45E940，保存运行即可，当然了前提是你能找到main函数和打印的flag的函数，再次运行exe文件即可得到flag</li>
+</ul>
 <p><img src="http://pic.yupoo.com/wfscjz/1639f889/big.png"></p>
-<h2 id="安卓逆向"><a href="#安卓逆向" class="headerlink" title="安卓逆向"></a>安卓逆向</h2><h3 id="记一下自己逆向路上遇到的第一个安卓逆向题"><a href="#记一下自己逆向路上遇到的第一个安卓逆向题" class="headerlink" title="记一下自己逆向路上遇到的第一个安卓逆向题"></a>记一下自己逆向路上遇到的第一个安卓逆向题</h3><p>题目时来自 <a target="_blank" rel="noopener" href="https://ctf.bugku.com/">Bugku</a> 里的一入门题 <a target="_blank" rel="noopener" href="https://ctf.bugku.com/challenges/detail/id/136.html">signin</a>,先在模拟器里面运行一下看看效果<br><img src="http://pic.yupoo.com/wfscjz/1ec16f3e/big.png"><br>猜测是一个输入字符然后验证的程序，我们用jeb打开apk文件，找到main函数按Q反编译成java代码<br><img src="http://pic.yupoo.com/wfscjz/eb4bfac8/big.png"><br>main函数里面的getFlag()函数是返回地址为2131427360处的字符串，然后该字符串在checkPassword函数中先被reverse翻转一下，然后base64解码，解码后的内容即为我们想要找的flag，所以问题变成了我们只需要找到地址为2131427360处的字符串即可<br>在apk文件的R类中可以找到地址为2131427360处的字符串命名为”toString”,在string类中，但是我在jeb里面没找到res/values文件夹，所以在百度搜索之后换用jadx打开apk文件找到res/values/strings.xml<br><img src="http://pic.yupoo.com/wfscjz/94e4b629/big.png"><br>成功找到了字符串，所以后续我们写脚本跑一下即可</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">import</span> base64
+<h2 id="安卓逆向"><a href="#安卓逆向" class="headerlink" title="安卓逆向"></a>安卓逆向</h2><h3 id="记一下自己逆向路上遇到的第一个安卓逆向题"><a href="#记一下自己逆向路上遇到的第一个安卓逆向题" class="headerlink" title="记一下自己逆向路上遇到的第一个安卓逆向题"></a>记一下自己逆向路上遇到的第一个安卓逆向题</h3><ul>
+<li>题目时来自 <a target="_blank" rel="noopener" href="https://ctf.bugku.com/">Bugku</a> 里的一入门题 <a target="_blank" rel="noopener" href="https://ctf.bugku.com/challenges/detail/id/136.html">signin</a>,先在模拟器里面运行一下看看效果<br><img src="http://pic.yupoo.com/wfscjz/1ec16f3e/big.png"><br>猜测是一个输入字符然后验证的程序，我们用jeb打开apk文件，找到main函数按Q反编译成java代码<br><img src="http://pic.yupoo.com/wfscjz/eb4bfac8/big.png"><br>main函数里面的getFlag()函数是返回地址为2131427360处的字符串，然后该字符串在checkPassword函数中先被reverse翻转一下，然后base64解码，解码后的内容即为我们想要找的flag，所以问题变成了我们只需要找到地址为2131427360处的字符串即可<br>在apk文件的R类中可以找到地址为2131427360处的字符串命名为”toString”,在string类中，但是我在jeb里面没找到res/values文件夹，所以在百度搜索之后用jadx打开apk文件找到res/values/strings.xml<br><img src="http://pic.yupoo.com/wfscjz/94e4b629/big.png"></li>
+<li>成功找到了字符串，所以后续我们写脚本跑一下即可<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">import</span> base64
 a <span class="token operator">=</span> <span class="token string">"991YiZWOz81ZhFjZfJXdwk3X1k2XzIXZIt3ZhxmZ"</span>
 a <span class="token operator">=</span> a<span class="token punctuation">[</span>::-1<span class="token punctuation">]</span>
 print<span class="token punctuation">(</span>base64.b64decode<span class="token punctuation">(</span>a<span class="token punctuation">))</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ul>
+<h2 id="Buuctf-Reverse3"><a href="#Buuctf-Reverse3" class="headerlink" title="Buuctf Reverse3"></a>Buuctf Reverse3</h2><ul>
+<li><p>查壳扔进IDA反汇编如下<br><img src="https://i.loli.net/2021/12/01/EzD1lFLBG296OIf.png"></p>
+</li>
+<li><p>所以我们反过来求解即可，脚本如下</p>
+<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">import</span> base64
+a <span class="token operator">=</span> <span class="token string">"e3nifIH9b_C@n@dH"</span>
+flag <span class="token operator">=</span> <span class="token string">""</span>
+<span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>len<span class="token punctuation">(</span>a<span class="token punctuation">))</span>:
+  flag +<span class="token operator">=</span> chr<span class="token punctuation">(</span>ord<span class="token punctuation">(</span>a<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> - i<span class="token punctuation">)</span>
+print<span class="token punctuation">(</span>base64.b64decode<span class="token punctuation">(</span>flag<span class="token punctuation">))</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ul>
+<h2 id="Buuctf-不一样的flag"><a href="#Buuctf-不一样的flag" class="headerlink" title="Buuctf 不一样的flag"></a>Buuctf 不一样的flag</h2><ul>
+<li>查壳，反汇编然后走迷宫<br><img src="https://i.loli.net/2021/12/01/i9azrYMSbB2FQxE.png"></li>
+</ul>
+<h2 id="Buuctf-simplere"><a href="#Buuctf-simplere" class="headerlink" title="Buuctf simplere"></a>Buuctf simplere</h2><ul>
+<li>个人感觉这道题主要考察的是大端存储和小端存储，这个如果不知道的话那么这道肯定做不出来 <a target="_blank" rel="noopener" href="https://baijiahao.baidu.com/s?id=1609459208102387514">计算机中数据存储方式</a><br>查壳，拖进IDA反汇编，找到Decry()函数<br><img src="https://i.loli.net/2021/12/02/IqpsuYS3KBOVCfv.png"><br>前面的部分主要是生成text和key字符串的，下面是验证输入的过程，所以我们可以写代码反推出flag<br><img src="https://i.loli.net/2021/12/02/xdyrqEYutk6QVHX.png"><br>但是由于源程序代码中还有模26的操作，但我目前没想到更好的办法，所以只能让i从0到4开始爆破，i大于4时范围超了肯定不正确</li>
+</ul>
+<pre class="line-numbers language-bash"><code class="language-bash">char text<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"killshadow"</span><span class="token punctuation">;</span>
+    char key<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"adsfkndcls"</span><span class="token punctuation">;</span>
+    char V1<span class="token punctuation">;</span>
+    char flag<span class="token punctuation">[</span>10<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+    int V3 <span class="token operator">=</span> 10<span class="token punctuation">;</span>
+    for<span class="token punctuation">(</span> int i<span class="token operator">=</span>0<span class="token punctuation">;</span>i<span class="token operator">&lt;</span>4<span class="token punctuation">;</span>i++<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        for<span class="token punctuation">(</span> int j<span class="token operator">=</span>0<span class="token punctuation">;</span>j<span class="token operator">&lt;</span>10<span class="token punctuation">;</span>j++<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            V1 <span class="token operator">=</span> text<span class="token punctuation">[</span>j<span class="token punctuation">]</span> - 97  + i * 26 + key<span class="token punctuation">[</span>V3++%10<span class="token punctuation">]</span> - 58<span class="token punctuation">;</span>
+            if<span class="token punctuation">(</span> V1 <span class="token operator">&lt;</span> 90 <span class="token operator">&amp;&amp;</span> V1 <span class="token operator">></span> 65 <span class="token punctuation">)</span>
+                flag<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> V1<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    cout <span class="token operator">&lt;&lt;</span> flag <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>

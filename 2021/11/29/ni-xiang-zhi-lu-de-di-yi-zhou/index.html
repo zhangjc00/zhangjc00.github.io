@@ -618,7 +618,61 @@ for i in range(len(s)):
 print(flag)
 </code></pre>
 <h2 id="Buuctf-JustRe"><a href="#Buuctf-JustRe" class="headerlink" title="Buuctf JustRe"></a>Buuctf JustRe</h2><ul>
-<li>直接使用keypatch插件修改汇编代码即可，当然你点击19999次也能出答案<br><img src="https://i.loli.net/2021/12/03/hSmrnbUAHuTtXCK.png"></li>
+<li>直接使用keypatch插件修改汇编代码让点击一次即可即可，当然你点击19999次也能出答案<br><img src="https://i.loli.net/2021/12/03/hSmrnbUAHuTtXCK.png"></li>
+</ul>
+<h2 id="Buuctf-findit"><a href="#Buuctf-findit" class="headerlink" title="Buuctf findit"></a>Buuctf findit</h2><ul>
+<li>这道题的解题方法和 <a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#%E5%88%AE%E5%BC%80%E6%9C%89%E5%A5%96">buuctf 刮开有奖</a> 有点类似，都是转换后的代码转移到自己的编译器里面执行，附件是apk文件，所以用jeb打开，找到对你输入进行验证的语句<br><img src="https://s2.loli.net/2021/12/03/2ynTkYoAZKh5bdI.png"></li>
+</ul>
+<h2 id="Buuctf-简单注册机"><a href="#Buuctf-简单注册机" class="headerlink" title="Buuctf 简单注册机"></a>Buuctf 简单注册机</h2><ul>
+<li>用jeb打开转换成java代码然后把生成flag的语句放到C++/C编译器里面跑一下就行，目前为止最简单的一道题</li>
+</ul>
+<pre><code>char v5[] = "dd2940c04462b4dd7c450528835cca15";
+    v5[2] = ((char)(v5[2] + v5[3] - 50));
+    v5[4] = ((char)(v5[2] + v5[5] - 48));
+    v5[30] = ((char)(v5[31] + v5[9] - 48));
+    v5[14] = ((char)(v5[27] + v5[28] - 97));
+    int v4;
+    for(v4 = 0; v4 &lt; 16; ++v4)
+    {
+        char v0 = v5[31 - v4];
+        v5[31 - v4] = v5[v4];
+        v5[v4] = v0;
+    }
+    cout &lt;&lt; "flag{" &lt;&lt; v5 &lt;&lt; "}" ;
+</code></pre>
+<h2 id="Buuctf-pyre"><a href="#Buuctf-pyre" class="headerlink" title="Buuctf pyre"></a>Buuctf pyre</h2><ul>
+<li>直接在在线网站 <a target="_blank" rel="noopener" href="http://tool.lu/pyc">在线工具</a> 上将pyc文件编译成py文件，然后写脚本结题即可<pre><code>code = [
+  '\x1f', 
+  '\x12',
+  '\x1d',
+  '(',
+  '0',
+  '4',
+  '\x01',
+  '\x06',
+  '\x14',
+  '4',
+  ',',
+  '\x1b',
+  'U',
+  '?',
+  'o',
+  '6',
+  '*',
+  ':',
+  '\x01',
+  'D',
+  ';',
+  '%',
+  '\x13']
+for i in range(len(code)-2,-1,-1):
+   code[i] = chr(ord(code[i]) ^ ord(code[i+1]))
+flag = ""
+for i in range(len(code)):
+  flag += chr( (ord(code[i]) -i) % 128 )
+print(flag)
+</code></pre>
+</li>
 </ul>
 
                 

@@ -8,7 +8,7 @@
       <link href="/2021/12/06/an-zhuo-ni-xiang-po-jie-huan-le-qie-shui-guo-da-zuo-zhan/"/>
       <url>/2021/12/06/an-zhuo-ni-xiang-po-jie-huan-le-qie-shui-guo-da-zuo-zhan/</url>
       
-        <content type="html"><![CDATA[<h2 id="AndroidKiller软件配置"><a href="#AndroidKiller软件配置" class="headerlink" title="AndroidKiller软件配置"></a>AndroidKiller软件配置</h2><ul><li>配置Java SDK环境<img src="/.io//12/06/an-zhuo-ni-xiang-po-jie-huan-le-qie-shui-guo-da-zuo-zhan/image1.jpg" class=""></li></ul>]]></content>
+        <content type="html"><![CDATA[<h2 id="Android-Killer软件配置"><a href="#Android-Killer软件配置" class="headerlink" title="Android Killer软件配置"></a>Android Killer软件配置</h2><ul><li>配置Java SDK环境<br>注意安装路径是你电脑上jdk根目录下的bin文件夹<img src="/2021/12/06/an-zhuo-ni-xiang-po-jie-huan-le-qie-shui-guo-da-zuo-zhan/image1.jpg" class=""></li><li>更新ApkTool<br>到ApkTool官方网站 <a href="https://ibotpeaches.github.io/Apktool/">ApkTool</a> 上下载最新版本的ApkTool,把下载好的jar文件放到AndroidKiller根目录下的bin\apktool\apktool里面，然后返回到上一级目录bin\apktool去修改apktool.bat和apktool.ini两个文件的内容，把使用的ApkTool修改成刚刚下载的那个<img src="/2021/12/06/an-zhuo-ni-xiang-po-jie-huan-le-qie-shui-guo-da-zuo-zhan/image2.jpg" class=""></li></ul><h2 id="欢乐切水果大乱斗"><a href="#欢乐切水果大乱斗" class="headerlink" title="欢乐切水果大乱斗"></a>欢乐切水果大乱斗</h2>]]></content>
       
       
       

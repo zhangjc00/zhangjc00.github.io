@@ -4,6 +4,38 @@
   
     
     <entry>
+      <title>逆向分析-Base64</title>
+      <link href="/2021/12/28/ni-xiang-fen-xi-base64-1/"/>
+      <url>/2021/12/28/ni-xiang-fen-xi-base64-1/</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>逆向分析-Base64</title>
+      <link href="/2021/12/28/ni-xiang-fen-xi-base64/"/>
+      <url>/2021/12/28/ni-xiang-fen-xi-base64/</url>
+      
+        <content type="html"><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p> 关于Base64的原理和加解密网上多的是，想要加解密一段字符串也可以到在线网站上去找，<a href="http://tool.chinaz.com/tools/base64.aspx">Base64</a> 就是其中一个，不过Base64解密工具在解密Base64时默认的标准串都是ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/，所以本偏博客的目的就是分享一个脚本，当标准串改变时能够根据所给的标准串进行编码和解码</p><h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><pre><code>#coding:utf-8import reimport base64import stringimport randomdef base64_encode(s, dictionary):   r = ""   p = ""   c = len(s) % 3   if (c &gt; 0):       for i in range(c, 3):           p += '='           s += "\0"   for c in range(0, len(s), 3):       n = (ord(s[c]) &lt;&lt; 16) + (ord(s[c+1]) &lt;&lt; 8) + (ord(s[c+2]))       n = [(n &gt;&gt; 18) &amp; 0x3F, (n &gt;&gt; 12) &amp; 0x3F, (n &gt;&gt; 6) &amp; 0x3F, n &amp; 0x3F]       r += dictionary[n[0]] + dictionary[n[1]] + dictionary[n[2]] + dictionary[n[3]]   return r[0:len(r) - len(p)]  + pdef base64_decode(s, dictionary):   base64inv = {}   for i in range(len(dictionary)):       base64inv[dictionary[i]] = i   s = s.replace("\n", "")   if not re.match(r"^([{alphabet}]{{4}})*([{alphabet}]{{3}}=|[{alphabet}]{{2}}==)?$".format(alphabet = dictionary), s):       raise ValueError("Invalid input: {}".format(s))   if len(s) == 0:       return ""   p = "" if (s[-1] != "=") else "AA" if (len(s) &gt; 1 and s[-2] == "=") else "A"   r = ""   s = s[0:len(s) - len(p)] + p   for c in range(0, len(s), 4):       n = (base64inv[s[c]] &lt;&lt; 18) + (base64inv[s[c+1]] &lt;&lt; 12) + (base64inv[s[c+2]] &lt;&lt; 6) + base64inv[s[c+3]]       r += chr((n &gt;&gt; 16) &amp; 255) + chr((n &gt;&gt; 8) &amp; 255) + chr(n &amp; 255)   return r[0:len(r) - len(p)]def test_base64():   dictionary = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"   def random_string(length):       return ''.join(random.choice(string.ascii_letters) for m in range(length))   for i in range(100):       s = random_string(i)       encoded = base64_encode(s, dictionary)       assert(encoded == base64.b64encode(s))       assert(s == base64_decode(encoded, dictionary))if __name__ == "__main__":  dictionary =  "加解密的base64标准串"    //根据不同题目自行修改Base64的标准串  print(base64_decode("需要解密的内容", dictionary))    print(base64_encode("需要加密的内容",dictionary))</code></pre>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Reverse Crypto </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>安卓逆向破解--欢乐切水果大作战</title>
       <link href="/2021/12/06/an-zhuo-ni-xiang-po-jie-huan-le-qie-shui-guo-da-zuo-zhan/"/>
       <url>/2021/12/06/an-zhuo-ni-xiang-po-jie-huan-le-qie-shui-guo-da-zuo-zhan/</url>

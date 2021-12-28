@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="安卓逆向破解--欢乐切水果大作战, 开心0v0超人的小窝">
+    <meta name="keywords" content="逆向分析-Base64, 开心0v0超人的小窝">
     <meta name="description" content="这是很好很长的一生，未来很好，你也是！">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>安卓逆向破解--欢乐切水果大作战 | 开心0v0超人的小窝</title>
+    <title>逆向分析-Base64 | 开心0v0超人的小窝</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -250,12 +250,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/10.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/9.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">安卓逆向破解--欢乐切水果大作战</h1>
+                    <h1 class="description center-align post-title">逆向分析-Base64</h1>
                 </div>
             </div>
         </div>
@@ -369,9 +369,13 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Reverse-Crypto/">
+                                <span class="chip bg-color">Reverse Crypto</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
@@ -383,7 +387,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-12-06
+                    2021-12-28
                 </div>
                 
 
@@ -404,28 +408,61 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="Android-Killer软件配置"><a href="#Android-Killer软件配置" class="headerlink" title="Android Killer软件配置"></a>Android Killer软件配置</h2><ul>
-<li>配置Java SDK环境<br>注意安装路径是你电脑上jdk根目录下的bin文件夹<img src="/2021/12/06/an-zhuo-ni-xiang-po-jie-huan-le-qie-shui-guo-da-zuo-zhan/image1.jpg" class=""></li>
-<li>更新ApkTool<br>到ApkTool官方网站 <a target="_blank" rel="noopener" href="https://ibotpeaches.github.io/Apktool/">ApkTool</a> 上下载最新版本的ApkTool,把下载好的jar文件放到AndroidKiller根目录下的bin\apktool\apktool里面，然后返回到上一级目录bin\apktool去修改apktool.bat和apktool.ini两个文件的内容，把使用的ApkTool修改成刚刚下载的那个<img src="/2021/12/06/an-zhuo-ni-xiang-po-jie-huan-le-qie-shui-guo-da-zuo-zhan/image2.jpg" class=""></li>
-</ul>
-<h2 id="欢乐切水果大乱斗"><a href="#欢乐切水果大乱斗" class="headerlink" title="欢乐切水果大乱斗"></a>欢乐切水果大乱斗</h2><ul>
-<li><p>我们破解修改这个软件的目的是修改apk文件里面和支付程序，让我们不充钱也可以购买装备，先在模拟器里面打开游戏点击充值看一下有什么提示，切记不要真充钱了</p>
-<img src="/2021/12/06/an-zhuo-ni-xiang-po-jie-huan-le-qie-shui-guo-da-zuo-zhan/image3.jpg" class=""></li>
-<li><p>提示信息支付失败，所以我们用 Android Killer 打开apk文件，在工程搜索，搜索字符里面输入字符串’失败’，然后文本转unicode再搜索，不然直接以文本’失败’搜索的话找不到我们需要的函数  </p>
-<img src="/2021/12/06/an-zhuo-ni-xiang-po-jie-huan-le-qie-shui-guo-da-zuo-zhan/image4.jpg" class=""></li>
-<li><p>在上图中发现定义的三个跟支付有关的函数 payResultCancel,payResultSuccess,payResultFalse,所以软件应该是根据你支付的情况分别跳转到这三个相应的函数，那就好办了，如果我们让程序无论用户支付成功还是失败都跳转到 payResultSuccess 函数里面岂不美哉  </p>
-</li>
-<li><p>在图中工程管理器所示的路径下找到 MiGuSdkPay$1.smali ,发现里面正好有根据我们的支付行为选择跳转到 payResultCancel,payResultSuccess,payResultFalse 三个相应函数里面的关键代码。至于是怎么发现关键函数在 MiGuSdkPay$1.smali 里面的，emmmm我一个一个点开看的…..  </p>
-<img src="/2021/12/06/an-zhuo-ni-xiang-po-jie-huan-le-qie-shui-guo-da-zuo-zhan/image5.jpg" class=""></li>
-<li><p>我们把根据相应支付行为跳转到的函数都改成 payResultSuccess 函数  </p>
-<img src="/2021/12/06/an-zhuo-ni-xiang-po-jie-huan-le-qie-shui-guo-da-zuo-zhan/image6.jpg" class=""></li>
-<li><p>然后下一步我们还可以在搜索框搜索游戏的名字 ‘欢乐切水果大作战’，然后把它修改为我们自己想定义的名字。然后点击主菜单栏Android 下的编译进行生成。- 当然你也可以修改其他的东西，包括图片音乐啥的，但是我现在技术还连入门都算不上，所以暂时还不会，等日后会的再来完善，现在我们用模拟器看看修改后的效果。</p>
-</li>
-<li><p>白嫖成功！逆向果然刑！！！</p>
-</li>
-</ul>
-<img src="/2021/12/06/an-zhuo-ni-xiang-po-jie-huan-le-qie-shui-guo-da-zuo-zhan/image7.jpg" class="">
-<p>-</p>
+                <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p> 关于Base64的原理和加解密网上多的是，想要加解密一段字符串也可以到在线网站上去找，<a target="_blank" rel="noopener" href="http://tool.chinaz.com/tools/base64.aspx">Base64</a> 就是其中一个，不过Base64解密工具在解密Base64时默认的标准串都是ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/，所以本偏博客的目的就是分享一个脚本，当标准串改变时能够根据所给的标准串进行编码和解码</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><pre><code>#coding:utf-8
+import re
+import base64
+import string
+import random
+def base64_encode(s, dictionary):
+   r = ""
+   p = ""
+   c = len(s) % 3
+
+   if (c &gt; 0):
+       for i in range(c, 3):
+           p += '='
+           s += "\0"
+
+   for c in range(0, len(s), 3):
+       n = (ord(s[c]) &lt;&lt; 16) + (ord(s[c+1]) &lt;&lt; 8) + (ord(s[c+2]))
+       n = [(n &gt;&gt; 18) &amp; 0x3F, (n &gt;&gt; 12) &amp; 0x3F, (n &gt;&gt; 6) &amp; 0x3F, n &amp; 0x3F]
+       r += dictionary[n[0]] + dictionary[n[1]] + dictionary[n[2]] + dictionary[n[3]]
+   return r[0:len(r) - len(p)]  + p
+
+def base64_decode(s, dictionary):
+   base64inv = {}
+   for i in range(len(dictionary)):
+       base64inv[dictionary[i]] = i
+
+   s = s.replace("\n", "")
+   if not re.match(r"^([{alphabet}]{{4}})*([{alphabet}]{{3}}=|[{alphabet}]{{2}}==)?$".format(alphabet = dictionary), s):
+       raise ValueError("Invalid input: {}".format(s))
+
+   if len(s) == 0:
+       return ""
+   p = "" if (s[-1] != "=") else "AA" if (len(s) &gt; 1 and s[-2] == "=") else "A"
+   r = ""
+   s = s[0:len(s) - len(p)] + p
+   for c in range(0, len(s), 4):
+       n = (base64inv[s[c]] &lt;&lt; 18) + (base64inv[s[c+1]] &lt;&lt; 12) + (base64inv[s[c+2]] &lt;&lt; 6) + base64inv[s[c+3]]
+       r += chr((n &gt;&gt; 16) &amp; 255) + chr((n &gt;&gt; 8) &amp; 255) + chr(n &amp; 255)
+   return r[0:len(r) - len(p)]
+def test_base64():
+   dictionary = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+   def random_string(length):
+       return ''.join(random.choice(string.ascii_letters) for m in range(length))
+   for i in range(100):
+       s = random_string(i)
+       encoded = base64_encode(s, dictionary)
+       assert(encoded == base64.b64encode(s))
+       assert(s == base64_decode(encoded, dictionary))
+if __name__ == "__main__":
+  dictionary =  "加解密的base64标准串"    //根据不同题目自行修改Base64的标准串
+  print(base64_decode("需要解密的内容", dictionary))  
+  print(base64_encode("需要加密的内容",dictionary))
+
+</code></pre>
 
                 
             </div>
@@ -452,7 +489,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://zhangjc00.github.io/2021/12/06/an-zhuo-ni-xiang-po-jie-huan-le-qie-shui-guo-da-zuo-zhan/">http://zhangjc00.github.io/2021/12/06/an-zhuo-ni-xiang-po-jie-huan-le-qie-shui-guo-da-zuo-zhan/</a>
+                    <a href="http://zhangjc00.github.io/2021/12/28/ni-xiang-fen-xi-base64/">http://zhangjc00.github.io/2021/12/28/ni-xiang-fen-xi-base64/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -489,7 +526,11 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/Reverse-Crypto/">
+                                    <span class="chip bg-color">Reverse Crypto</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -661,7 +702,7 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2021/12/28/ni-xiang-fen-xi-base64/">
+                <a href="/2021/12/28/ni-xiang-fen-xi-base64-1/">
                     <div class="card-image">
                         
                         
@@ -689,14 +730,6 @@
                     </div>
                 </div>
                 
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/Reverse-Crypto/">
-                        <span class="chip bg-color">Reverse Crypto</span>
-                    </a>
-                    
-                </div>
-                
             </div>
         </div>
         
@@ -706,13 +739,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/12/02/ni-xiang-fen-xi-dui-cheng-jia-mi-rc4/">
+                <a href="/2021/12/06/an-zhuo-ni-xiang-po-jie-huan-le-qie-shui-guo-da-zuo-zhan/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="逆向分析--对称加密RC4">
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="安卓逆向破解--欢乐切水果大作战">
                         
-                        <span class="card-title">逆向分析--对称加密RC4</span>
+                        <span class="card-title">安卓逆向破解--欢乐切水果大作战</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -723,7 +756,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-12-02
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-12-06
                             </span>
                         <span class="publish-author">
                             
@@ -732,14 +765,6 @@
                             
                         </span>
                     </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/Reverse-Crypto/">
-                        <span class="chip bg-color">Reverse Crypto</span>
-                    </a>
-                    
                 </div>
                 
             </div>

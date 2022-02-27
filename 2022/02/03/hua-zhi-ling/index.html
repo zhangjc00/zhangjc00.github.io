@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="逆向分析-XTEA加密, 开心0v0超人的小窝">
+    <meta name="keywords" content="花指令, 开心0v0超人的小窝">
     <meta name="description" content="这是很好很长的一生，未来很好，你也是！">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>逆向分析-XTEA加密 | 开心0v0超人的小窝</title>
+    <title>花指令 | 开心0v0超人的小窝</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -250,12 +250,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/14.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">逆向分析-XTEA加密</h1>
+                    <h1 class="description center-align post-title">花指令</h1>
                 </div>
             </div>
         </div>
@@ -371,8 +371,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/Reverse-Crypto/">
-                                <span class="chip bg-color">Reverse Crypto</span>
+                            <a href="/tags/Reverse/">
+                                <span class="chip bg-color">Reverse</span>
                             </a>
                         
                     </div>
@@ -387,7 +387,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-01-29
+                    2022-02-03
                 </div>
                 
 
@@ -408,46 +408,39 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="算法原理"><a href="#算法原理" class="headerlink" title="算法原理"></a>算法原理</h2><img src="/2022/01/29/ni-xiang-fen-xi-xtea-jia-mi/image1.jpg" class="">  
+                <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
+<li>花指令是对抗反汇编的有效手段之一，正常代码添加了花指令之后，可以破坏静态反汇编的过程，使反汇编的结果出现错误。错误的反汇编结果会造成破解者的分析工作大量增加，进而使之不能理解程序的结构和算法，也就很难破解程序，从而达到病毒或软件保护的目的。其实质就是一串垃圾指令，它与程序本身的功能无关，并不影响程序本身的逻辑。在软件保护中，花指令被作为一种手段来增加静态分析的难度，花指令也可以被用在病毒或木马上，通过加入花指令改变程序的特征码，躲避杀软的扫描，从而达到免杀的目的，本文将介绍一些常见的花指令的形式，花指令一般被分为两类，被执行的和不会被执行的。花指令是企图隐藏掉不想被逆向工程的代码块 (或其它功能) 的一种方法, 在真实代码中插入一些垃圾代码的同时还保证原有程序的正确执行, 而程序无法很好地反编译, 难以理解程序内容, 达到混淆视听的效果.</li>
+</ul>
+<h2 id="花指令的分类"><a href="#花指令的分类" class="headerlink" title="花指令的分类"></a>花指令的分类</h2><h3 id="可执行式花指令"><a href="#可执行式花指令" class="headerlink" title="可执行式花指令"></a>可执行式花指令</h3><ul>
+<li>可执行式花指令指的是能够正常运行的但又不改变原始程序逻辑性的一组无用指令。这类花指令有如下特点：①可以正常运行；②不改变任何寄存器的值；③反汇编器可以正确反汇编该指令。例如这样几组花指令就属于该类别：PUSHEAX＆POPEAX；NOP：INCEAX&amp;DECEAX等等。这种类别的花指令组合形式很多，常常用在病毒代码的变形引擎中，病毒在传播时通过变形引擎随机产生一组该类别花指令并插入到病毒正常代码中，可以改变病毒的特征码，从而起到变形的作用。</li>
+</ul>
+<h3 id="不可执行花指令"><a href="#不可执行花指令" class="headerlink" title="不可执行花指令"></a>不可执行花指令</h3><ul>
+<li>不可执行花指令是指被插入到原始代码中但又不改变原始程序逻辑性的一组无用字节。这类花指令有如下特点：①不可以正常运行；②不改变任何寄存器的值；③反汇编器可能会错误反汇编这些字节。根据反汇编的工作原理，只有当花指令同正常指令的开始几个字节被反汇编器识别成一条指令时，才能有效破坏反汇编的结果。因此，插入的花指令应当是一些不完整的指令，被插入的不完整指令可以是随机选择的。正因为不可执行花指令有这些特点，该类花指令才能应用到软件保护中。Cullen等人指出为了能够有效“迷惑”静态反汇编工具，同时保证代码的正确运行，花指令必须满足两个基本特征，即：  1)垃圾数据必须是某个合法指令的一部分：  </li>
+</ul>
+<p>2)程序运行时，花指令必须位于实际不可执行的代码路径。</p>
+<h2 id="线性扫描和行递归"><a href="#线性扫描和行递归" class="headerlink" title="线性扫描和行递归"></a>线性扫描和行递归</h2><ul>
+<li>不可执行花指令的成功产生主要来自反汇编算法的缺陷，而当前反汇编算法主要分为两种，线性递归扫描和行递归扫描</li>
+</ul>
+<h3 id="线性扫描算法"><a href="#线性扫描算法" class="headerlink" title="线性扫描算法"></a>线性扫描算法</h3><ul>
+<li>线性扫描算法p1从程序的入口点开始反汇编，然后对整个代码段进行扫描，反汇编扫描过程中所遇到的每条指令。线性扫描算法的缺点在于在冯诺依曼体系结构下，无法区分数据与代码，从而导致将代码段中嵌入的数据误解释为指令的操作码，以致最后得到错误的反汇编结果。</li>
+</ul>
+<h3 id="行递归算法"><a href="#行递归算法" class="headerlink" title="行递归算法"></a>行递归算法</h3><ul>
+<li>相比线性扫描算法，行进递归算法通过程序的控制流来确定反汇编的下一条指令，遇到非控制转移指令时顺序进行反汇编，而遇到控制转移指令时则从转移地址处开始进行反汇编。行进递归算法的缺点在于准确确定间接转移目的地址的难度较大。</li>
+</ul>
+<h2 id="常见花指令"><a href="#常见花指令" class="headerlink" title="常见花指令"></a>常见花指令</h2><ul>
+<li>jx + jnx </li>
+</ul>
+<img src="/2022/02/03/hua-zhi-ling/image1.jpg" class="">  
 
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><pre><code>void encipher(unsigned int num_rounds, uint32_t v[2], uint32_t const key[4]) {
-      unsigned int i;
-      uint32_t v0=v[0], v1=v[1], sum=0, delta=0x9E3779B9;
-      for (i=0; i &lt; num_rounds; i++) {
-          v0 += (((v1 &lt;&lt; 4) ^ (v1 &gt;&gt; 5)) + v1) ^ (sum + key[sum &amp; 3]);
-          sum += delta;
-          v1 += (((v0 &lt;&lt; 4) ^ (v0 &gt;&gt; 5)) + v0) ^ (sum + key[(sum&gt;&gt;11) &amp; 3]);
-      }
-      v[0]=v0; v[1]=v1;
-  }
-   
-  void decipher(unsigned int num_rounds, uint32_t v[2], uint32_t const key[4]) {
-      unsigned int i;
-      uint32_t v0=v[0], v1=v[1], delta=0x9E3779B9, sum=delta*num_rounds;
-      for (i=0; i &lt; num_rounds; i++) {
-          v1 -= (((v0 &lt;&lt; 4) ^ (v0 &gt;&gt; 5)) + v0) ^ (sum + key[(sum&gt;&gt;11) &amp; 3]);
-          sum -= delta;
-          v0 -= (((v1 &lt;&lt; 4) ^ (v1 &gt;&gt; 5)) + v1) ^ (sum + key[sum &amp; 3]);
-      }
-      v[0]=v0; v[1]=v1;
-  }
-   
-  int main()
-  {
-      uint32_t v[2]={1,2};
-      uint32_t const k[4]={2,2,3,4};
-      unsigned int r=32;//num_rounds建议取值为32
-      // v为要加密的数据是两个32位无符号整数
-      // k为加密解密密钥，为4个32位无符号整数，即密钥长度为128位
-      printf("加密前原始数据：%u %u\n",v[0],v[1]);
-      encipher(r, v, k);
-      printf("加密后的数据：%u %u\n",v[0],v[1]);
-      decipher(r, v, k);
-      printf("解密后的数据：%u %u\n",v[0],v[1]);
-      return 0;
-  }
-</code></pre>
+<ul>
+<li>call+pop/add esp/add [esp] + retn</li>
+</ul>
+<img src="/2022/02/03/hua-zhi-ling/image2.jpg" class="">
 
+<ul>
+<li>stx/jx</li>
+</ul>
+<img src="/2022/02/03/hua-zhi-ling/image3.jpg" class="">
                 
             </div>
             <hr/>
@@ -473,7 +466,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://zhangjc00.github.io/2022/01/29/ni-xiang-fen-xi-xtea-jia-mi/">http://zhangjc00.github.io/2022/01/29/ni-xiang-fen-xi-xtea-jia-mi/</a>
+                    <a href="http://zhangjc00.github.io/2022/02/03/hua-zhi-ling/">http://zhangjc00.github.io/2022/02/03/hua-zhi-ling/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -511,8 +504,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/Reverse-Crypto/">
-                                    <span class="chip bg-color">Reverse Crypto</span>
+                                <a href="/tags/Reverse/">
+                                    <span class="chip bg-color">Reverse</span>
                                 </a>
                             
                         </div>
@@ -682,9 +675,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2022/02/03/hua-zhi-ling/">
                     <div class="card-image">
@@ -702,9 +696,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-02-03
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-02-03
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -713,6 +707,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -731,13 +726,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/01/27/ni-xiang-fen-xi-tea-jia-mi/">
+                <a href="/2022/01/29/ni-xiang-fen-xi-xtea-jia-mi/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="逆向分析-TEA加密">
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="逆向分析-XTEA加密">
                         
-                        <span class="card-title">逆向分析-TEA加密</span>
+                        <span class="card-title">逆向分析-XTEA加密</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -748,7 +743,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-27
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-29
                             </span>
                         <span class="publish-author">
                             

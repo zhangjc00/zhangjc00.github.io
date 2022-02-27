@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="逆向之路的第一周, 开心0v0超人的小窝">
+    <meta name="keywords" content="逆向分析--对称加密RC4, 开心0v0超人的小窝">
     <meta name="description" content="这是很好很长的一生，未来很好，你也是！">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>逆向之路的第一周 | 开心0v0超人的小窝</title>
+    <title>逆向分析--对称加密RC4 | 开心0v0超人的小窝</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -250,12 +250,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/9.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">逆向之路的第一周</h1>
+                    <h1 class="description center-align post-title">逆向分析--对称加密RC4</h1>
                 </div>
             </div>
         </div>
@@ -371,8 +371,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/Reverse/">
-                                <span class="chip bg-color">Reverse</span>
+                            <a href="/tags/Reverse-Crypto/">
+                                <span class="chip bg-color">Reverse Crypto</span>
                             </a>
                         
                     </div>
@@ -387,7 +387,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-11-29
+                    2021-01-17
                 </div>
                 
 
@@ -408,155 +408,32 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="修改汇编代码"><a href="#修改汇编代码" class="headerlink" title="修改汇编代码"></a>修改汇编代码</h2><h3 id="直接跳转到生成flag的函数"><a href="#直接跳转到生成flag的函数" class="headerlink" title="直接跳转到生成flag的函数"></a>直接跳转到生成flag的函数</h3><ul>
-<li>题目是来自 <a target="_blank" rel="noopener" href="https://ctf.bugku.com/">Bugku</a> 里面的一道入门题 <a target="_blank" rel="noopener" href="https://ctf.bugku.com/challenges/detail/id/116.html">游戏过关</a>  查壳反汇编不用说了，这道题是让你输入一些数字让程序最终执行到输出flag的函数<br>如果你游戏水平够高你也可以直接通过玩游戏来获取flag，不然的话还是修改汇编代码来的直接，找到main函数，在几个call  sub_45A7BE指令里面随便选一个修改为call  sub_45E940，保存运行即可，当然了前提是你能找到main函数和打印的flag的函数，再次运行exe文件即可得到flag</li>
+                <h2 id="算法简介"><a href="#算法简介" class="headerlink" title="算法简介"></a>算法简介</h2><ul>
+<li>RC4是一种对称的流加密算法，它的密钥长度可变，通过随机数生成的核心与异或运算完成对于数据流的加密。相对于AES，DES对于固定长度数据块加密，RC4输入的plaintext为任意的。RC4的特点是运算速度快，密钥长度为1–256BYTE可变。<br>RC4的核心可以分为对密钥空间s的初始化与密文的交换。</li>
 </ul>
-<p><img src="http://pic.yupoo.com/wfscjz/1639f889/big.png"></p>
-<h2 id="安卓逆向"><a href="#安卓逆向" class="headerlink" title="安卓逆向"></a>安卓逆向</h2><h3 id="记一下自己逆向路上遇到的第一个安卓逆向题"><a href="#记一下自己逆向路上遇到的第一个安卓逆向题" class="headerlink" title="记一下自己逆向路上遇到的第一个安卓逆向题"></a>记一下自己逆向路上遇到的第一个安卓逆向题</h3><ul>
-<li>题目时来自 <a target="_blank" rel="noopener" href="https://ctf.bugku.com/">Bugku</a> 里的一入门题 <a target="_blank" rel="noopener" href="https://ctf.bugku.com/challenges/detail/id/136.html">signin</a>,先在模拟器里面运行一下看看效果<br><img src="http://pic.yupoo.com/wfscjz/1ec16f3e/big.png"><br>猜测是一个输入字符然后验证的程序，我们用jeb打开apk文件，找到main函数按Q反编译成java代码<br><img src="http://pic.yupoo.com/wfscjz/eb4bfac8/big.png"><br>main函数里面的getFlag()函数是返回地址为2131427360处的字符串，然后该字符串在checkPassword函数中先被reverse翻转一下，然后base64解码，解码后的内容即为我们想要找的flag，所以问题变成了我们只需要找到地址为2131427360处的字符串即可<br>在apk文件的R类中可以找到地址为2131427360处的字符串命名为”toString”,在string类中，但是我在jeb里面没找到res/values文件夹，所以在百度搜索之后用jadx打开apk文件找到res/values/strings.xml<br><img src="http://pic.yupoo.com/wfscjz/94e4b629/big.png"></li>
-<li>成功找到了字符串，所以后续我们写脚本跑一下即可<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">import</span> base64
-a <span class="token operator">=</span> <span class="token string">"991YiZWOz81ZhFjZfJXdwk3X1k2XzIXZIt3ZhxmZ"</span>
-a <span class="token operator">=</span> a<span class="token punctuation">[</span>::-1<span class="token punctuation">]</span>
-print<span class="token punctuation">(</span>base64.b64decode<span class="token punctuation">(</span>a<span class="token punctuation">))</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
-<h2 id="Buuctf-Reverse3"><a href="#Buuctf-Reverse3" class="headerlink" title="Buuctf Reverse3"></a>Buuctf Reverse3</h2><ul>
-<li><p>查壳扔进IDA反汇编如下<br><img src="https://i.loli.net/2021/12/01/EzD1lFLBG296OIf.png"></p>
-</li>
-<li><p>所以我们反过来求解即可，脚本如下</p>
-<pre class="line-numbers language-bash"><code class="language-bash"><span class="token function">import</span> base64
-a <span class="token operator">=</span> <span class="token string">"e3nifIH9b_C@n@dH"</span>
-flag <span class="token operator">=</span> <span class="token string">""</span>
-<span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span>len<span class="token punctuation">(</span>a<span class="token punctuation">))</span>:
-  flag +<span class="token operator">=</span> chr<span class="token punctuation">(</span>ord<span class="token punctuation">(</span>a<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> - i<span class="token punctuation">)</span>
-print<span class="token punctuation">(</span>base64.b64decode<span class="token punctuation">(</span>flag<span class="token punctuation">))</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
-<h2 id="Buuctf-不一样的flag"><a href="#Buuctf-不一样的flag" class="headerlink" title="Buuctf 不一样的flag"></a>Buuctf 不一样的flag</h2><ul>
-<li>查壳，反汇编然后走迷宫<br><img src="https://i.loli.net/2021/12/01/i9azrYMSbB2FQxE.png"></li>
-</ul>
-<h2 id="Buuctf-simplere"><a href="#Buuctf-simplere" class="headerlink" title="Buuctf simplere"></a>Buuctf simplere</h2><ul>
-<li>个人感觉这道题主要考察的是大端存储和小端存储，这个如果不知道的话那么这道肯定做不出来 <a target="_blank" rel="noopener" href="https://baijiahao.baidu.com/s?id=1609459208102387514">计算机中数据存储方式</a><br>查壳，拖进IDA反汇编，找到Decry()函数<br><img src="https://i.loli.net/2021/12/02/IqpsuYS3KBOVCfv.png"><br>前面的部分主要是生成text和key字符串的，下面是验证输入的过程，所以我们可以写代码反推出flag<br><img src="https://i.loli.net/2021/12/02/xdyrqEYutk6QVHX.png">  </li>
-<li>但是由于源程序代码中还有模26的操作，但我目前没想到更好的办法，所以只能让i从0到4开始爆破，i大于4时范围超了肯定不正确<pre class="line-numbers language-bash"><code class="language-bash">char text<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"killshadow"</span><span class="token punctuation">;</span>
-  char key<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"adsfkndcls"</span><span class="token punctuation">;</span>
-  char V1<span class="token punctuation">;</span>
-  char flag<span class="token punctuation">[</span>10<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
-  int V3 <span class="token operator">=</span> 10<span class="token punctuation">;</span>
-  for<span class="token punctuation">(</span> int i<span class="token operator">=</span>0<span class="token punctuation">;</span>i<span class="token operator">&lt;</span>4<span class="token punctuation">;</span>i++<span class="token punctuation">)</span>
-  <span class="token punctuation">{</span>
-      for<span class="token punctuation">(</span> int j<span class="token operator">=</span>0<span class="token punctuation">;</span>j<span class="token operator">&lt;</span>10<span class="token punctuation">;</span>j++<span class="token punctuation">)</span>
-      <span class="token punctuation">{</span>
-          V1 <span class="token operator">=</span> text<span class="token punctuation">[</span>j<span class="token punctuation">]</span> - 97  + i * 26 + key<span class="token punctuation">[</span>V3++%10<span class="token punctuation">]</span> - 58<span class="token punctuation">;</span>
-          if<span class="token punctuation">(</span> V1 <span class="token operator">&lt;</span> 90 <span class="token operator">&amp;&amp;</span> V1 <span class="token operator">></span> 65 <span class="token punctuation">)</span>
-              flag<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> V1<span class="token punctuation">;</span>
-      <span class="token punctuation">}</span>
-  <span class="token punctuation">}</span>
-  cout <span class="token operator">&lt;&lt;</span> flag <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ul>
-<h2 id="Buuctf-Java逆向解密"><a href="#Buuctf-Java逆向解密" class="headerlink" title="Buuctf Java逆向解密"></a>Buuctf Java逆向解密</h2><ul>
-<li>附件是.class文件，所以直接用jd-gui打开<br><img src="https://i.loli.net/2021/12/02/djfN4bxquEDrHYv.png"></li>
-<li>只是在数后面加上异或的值，java脚本如下</li>
-</ul>
-<pre><code>public static void main(String[] args) {
-        // TODO Auto-generated method stub
-        String flag = "" ;
-        int[] KEY = { 180, 136, 137, 147, 191, 137, 147, 191, 148, 136, 133, 191, 134, 140, 129, 135, 191, 65 };
-        for (int j = 0; j &lt; KEY.length; j++) {
-          flag += (char)(KEY[j] - '@' ^ 0x20);
-        }
-        System.out.print(flag);
-    }
+<h2 id="主要步骤"><a href="#主要步骤" class="headerlink" title="主要步骤"></a>主要步骤</h2><ul>
+<li>初始化S盒并用秘钥打乱S盒<br>```<br>void rc4_init(unsigned char<em>s,unsigned char</em>key,unsigned long len)//s最开始是传入的长度为256的char型空数组，用来存放初始化后的s<br>//key是定义的秘钥  //最后一个len是密钥的长度<br>{<br> int i=0;<br> int j=0;<br> unsigned char k[256]={};<br> unsigned char temp = 0;<br>for(i=0;i&lt;256;i++)<br> {<pre><code>s[i]=i;         //0-255赋给s
+ k[i]=key[i%len];   //将k重新计算
 </code></pre>
-<h2 id="Buuctf-刮开有奖"><a href="#Buuctf-刮开有奖" class="headerlink" title="Buuctf 刮开有奖"></a>Buuctf 刮开有奖</h2><ul>
-<li><p>一道输入flag然后对你的输入进行验证的题目，查壳，反汇编，找到关键的函数<br><img src="https://i.loli.net/2021/12/03/FbHoKOafIND7EWX.png"></p>
-</li>
-<li><p>在把sub_4010F0()中的代码转移到编译器里面自己执行时需要修改一些内容，首先(_DWORD <em>)要去除，然后就是</em>( i * 4 + a1)，点击v7,v8等等会发现它们的地址都是相差4，当然这是因为是32位程序导致的，如果是64位程序相差就位8.所以当i等于1时*(1 * 4 + a1) 对应的就是v8的值，是不是很像C++数组里面的 *（a + i ) ,所以在把代码转移到自己的编译器上时，你可以做如下修改 ：</p>
-<p>1 将v7[0] 到 v16 的值用一个长度为11的数组表示</p>
-<p>2 删去(_DWORD *) 和所有的 4 *</p>
-</li>
-<li><p>最后代码如下，跑一下就能出结果</p>
-</li>
-</ul>
-<pre><code>#include &lt;bits/stdc++.h&gt;
-
-using namespace std;
-
-int __cdecl sub_4010F0(int *a1, int a2, int a3)
-{
-  int result; // eax
-  int i; // esi
-  int v5; // ecx
-  int v6; // edx
-
-  result = a3;
-  for ( i = a2; i &lt;= a3; a2 = i )
-  {
-    v5 =  i;
-    v6 = a1[i];
-    if ( a2 &lt; result &amp;&amp; i &lt; result )
-    {
-      do
-      {
-        if ( v6 &gt; a1[result] )
-        {
-          if ( i &gt;= result )
-            break;
-          ++i;
-          a1[v5] = a1[result];
-          if ( i &gt;= result )
-            break;
-          while ( a1[i] &lt;= v6 )
-          {
-            if ( ++i &gt;= result )
-              goto LABEL_13;
-          }
-          if ( i &gt;= result )
-            break;
-          v5 =  i;
-          a1[result] = a1[i];
-        }
-        --result;
-      }
-      while ( i &lt; result );
-    }
-LABEL_13:
-    a1[result] = v6;
-    sub_4010F0(a1, a2, i - 1);
-    result = a3;
-    ++i;
-  }
-  return result;
-}
-
-int main()
-{
-    char flag[] = "WP1jMp" ; // v4 和 v5 base64解码
-    int arry[11] = {90,74,83,69,67,97,78,72,51,110,103};
-    sub_4010F0(arry,0,10) ;
-    cout &lt;&lt; "flag{" &lt;&lt; (char)(arry[0] + 34) &lt;&lt; char(arry[4]) &lt;&lt; flag &lt;&lt; "}" ;
-    return 0;
-}
+ }<br>for(i=0;i&lt;256;i++)<br>{<pre><code>j=(j+s[i]+k[i])%256;    //给j赋
+temp=s[i];
+s[i]=s[j];
+s[j]=temp;    //s[i]和s[j]交换
 </code></pre>
-<h2 id="Buuctf-luck-guy"><a href="#Buuctf-luck-guy" class="headerlink" title="Buuctf luck_guy"></a>Buuctf luck_guy</h2><ul>
-<li>查壳，反汇编找到关键函数getflag()<br><img src="https://i.loli.net/2021/12/03/QbDg6eIymoC8XEw.png"></li>
-<li>写代码跑一下即可,提交时把GXY换成flag即可</li>
+ }<br>}</li>
 </ul>
-<pre><code>s = "icug`of"
-flag = "GXY{do_not_"
-for i in range(len(s)):
-    if i % 2 == 1:
-       flag += chr(ord(s[i]) - 2 )
-    else:
-       flag += chr(ord(s[i]) - 1 )
-print(flag)
+<pre><code>
+
+ - 加解密部分，因为是对称加密算法，所以既可加密也可解密
 </code></pre>
-<h2 id="Buuctf-JustRe"><a href="#Buuctf-JustRe" class="headerlink" title="Buuctf JustRe"></a>Buuctf JustRe</h2><ul>
-<li>直接使用keypatch插件修改汇编代码让点击一次即可即可，当然你点击19999次也能出答案<br><img src="https://i.loli.net/2021/12/03/hSmrnbUAHuTtXCK.png"></li>
-</ul>
+<p>void rc4_crypt(unsigned char<em>s,unsigned char</em>data,unsigned long len)//s是上面初始化之后的，data是我们要加密的数据，len是data的长度<br>{<br>    int i=0,j=0,t=0;<br>    unsigned long k=0;<br>    unsigned char temp;<br>     for(k=0;k&lt;len;k++)<br>    {<br>        i=(i+1)%256;            //固定方式<br>        j=(j+s[i])%256;          //固定方式<br>        temp=s[i];<br>        s[i]=s[j];<br>        s[j]=temp;             //s[i]和s[j]交换<br>        t=(s[i]+s[j])%256;      //固定方式<br>        data[k]^=s[t];          //异或运算，即加解密<br>    }<br>}</p>
+<pre><code>
+ - main函数
+ 
+</code></pre>
+<p>int main()<br>{<br>    unsigned char s[256] = {0};<br>    unsigned char s2[256] = {0};<br>    char key[256] = {“iloveyou”};<br>    char data[512] = {“U2FsdGVkX1+WuEwk2Obam1iZnSWRLi8nKs0=”};<br>    unsigned long len = strlen(data);<br>    rc4_init(s,(unsigned char*)key,strlen(key));<br>    rc4_crypt(s,(unsigned char*)data,len);<br>    cout &lt;&lt; data;<br>    return 0;<br>}</p>
+<p>```</p>
+<h2 id="解题"><a href="#解题" class="headerlink" title="解题"></a>解题</h2><p>介绍了这么多，主要是为了熟悉RC4加密的原理，但是真正在做题的时候还是直接去在线网站上解密RC4比较方便，除此之外，因为在逆向题目中RC4加密往往是调用某个函数来实现的，我们可以直接将这个函数复制到我们自己的编译器上跑一遍也能得出结果</p>
 
                 
             </div>
@@ -583,7 +460,7 @@ print(flag)
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://zhangjc00.github.io/2021/11/29/ni-xiang-zhi-lu-de-di-yi-zhou/">http://zhangjc00.github.io/2021/11/29/ni-xiang-zhi-lu-de-di-yi-zhou/</a>
+                    <a href="http://zhangjc00.github.io/2021/01/17/ni-xiang-fen-xi-dui-cheng-jia-mi-rc4/">http://zhangjc00.github.io/2021/01/17/ni-xiang-fen-xi-dui-cheng-jia-mi-rc4/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -621,8 +498,8 @@ print(flag)
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/Reverse/">
-                                    <span class="chip bg-color">Reverse</span>
+                                <a href="/tags/Reverse-Crypto/">
+                                    <span class="chip bg-color">Reverse Crypto</span>
                                 </a>
                             
                         </div>
@@ -796,13 +673,13 @@ print(flag)
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2021/12/06/an-zhuo-ni-xiang-po-jie-huan-le-qie-shui-guo-da-zuo-zhan/">
+                <a href="/2021/11/29/ni-xiang-zhi-lu-de-di-yi-zhou/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="安卓逆向破解--欢乐切水果大作战">
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="逆向之路的第一周">
                         
-                        <span class="card-title">安卓逆向破解--欢乐切水果大作战</span>
+                        <span class="card-title">逆向之路的第一周</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -813,7 +690,7 @@ print(flag)
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-12-06
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-11-29
                         </span>
                         <span class="publish-author">
                             
@@ -826,8 +703,8 @@ print(flag)
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Game/">
-                        <span class="chip bg-color">Game</span>
+                    <a href="/tags/Reverse/">
+                        <span class="chip bg-color">Reverse</span>
                     </a>
                     
                 </div>
@@ -838,7 +715,7 @@ print(flag)
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+                本篇&nbsp;<i class="far fa-dot-circle"></i>
             </div>
             <div class="card">
                 <a href="/2021/01/17/ni-xiang-fen-xi-dui-cheng-jia-mi-rc4/">
@@ -868,6 +745,7 @@ print(flag)
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     

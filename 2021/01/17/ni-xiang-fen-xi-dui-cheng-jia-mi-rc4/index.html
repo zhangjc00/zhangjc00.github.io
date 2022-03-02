@@ -421,13 +421,13 @@
    int j=0;
    unsigned char k[256]={};
    unsigned char temp = 0;
-  for(i=0;i&lt;256;i++)
-   {
-      s[i]=i;         //0-255赋给s
+   for(i=0;i&lt;256;i++)
+    {
+       s[i]=i;         //0-255赋给s
        k[i]=key[i%len];   //将k重新计算
-   }
-  for(i=0;i&lt;256;i++)
-  {
+    }
+   for(i=0;i&lt;256;i++)
+   {
       j=(j+s[i]+k[i])%256;    //给j赋
       temp=s[i];
       s[i]=s[j];
@@ -443,7 +443,7 @@
     int i=0,j=0,t=0;
     unsigned long k=0;
     unsigned char temp;
-     for(k=0;k&lt;len;k++)
+    for(k=0;k&lt;len;k++)
     {
         i=(i+1)%256;            //固定方式
         j=(j+s[i])%256;          //固定方式

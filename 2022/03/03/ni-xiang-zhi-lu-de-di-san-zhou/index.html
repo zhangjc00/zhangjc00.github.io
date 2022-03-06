@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="花指令, 开心0v0超人">
+    <meta name="keywords" content="逆向之路的第三周, 开心0v0超人">
     <meta name="description" content="这是很好很长的一生，未来很好，你也是！">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>花指令 | 开心0v0超人</title>
+    <title>逆向之路的第三周 | 开心0v0超人</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -250,12 +250,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/14.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">花指令</h1>
+                    <h1 class="description center-align post-title">逆向之路的第三周</h1>
                 </div>
             </div>
         </div>
@@ -387,7 +387,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-02-03
+                    2022-03-03
                 </div>
                 
 
@@ -408,39 +408,120 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
-<li>花指令是对抗反汇编的有效手段之一，正常代码添加了花指令之后，可以破坏静态反汇编的过程，使反汇编的结果出现错误。错误的反汇编结果会造成破解者的分析工作大量增加，进而使之不能理解程序的结构和算法，也就很难破解程序，从而达到病毒或软件保护的目的。其实质就是一串垃圾指令，它与程序本身的功能无关，并不影响程序本身的逻辑。在软件保护中，花指令被作为一种手段来增加静态分析的难度，花指令也可以被用在病毒或木马上，通过加入花指令改变程序的特征码，躲避杀软的扫描，从而达到免杀的目的，本文将介绍一些常见的花指令的形式，花指令一般被分为两类，被执行的和不会被执行的。花指令是企图隐藏掉不想被逆向工程的代码块 (或其它功能) 的一种方法, 在真实代码中插入一些垃圾代码的同时还保证原有程序的正确执行, 而程序无法很好地反编译, 难以理解程序内容, 达到混淆视听的效果.</li>
+                <h2 id="Buuctf-easyre1"><a href="#Buuctf-easyre1" class="headerlink" title="Buuctf easyre1"></a>Buuctf easyre1</h2><ul>
+<li>这是buuctf里的一道简单题目，<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[ACTF%E6%96%B0%E7%94%9F%E8%B5%9B2020]easyre">easyre1</a> ,主要就是脱壳然后放到ida里面反汇编一下就可以，关键代码如下</li>
 </ul>
-<h2 id="花指令的分类"><a href="#花指令的分类" class="headerlink" title="花指令的分类"></a>花指令的分类</h2><h3 id="可执行式花指令"><a href="#可执行式花指令" class="headerlink" title="可执行式花指令"></a>可执行式花指令</h3><ul>
-<li>可执行式花指令指的是能够正常运行的但又不改变原始程序逻辑性的一组无用指令。这类花指令有如下特点：①可以正常运行；②不改变任何寄存器的值；③反汇编器可以正确反汇编该指令。例如这样几组花指令就属于该类别：PUSHEAX＆POPEAX；NOP：INCEAX&amp;DECEAX等等。这种类别的花指令组合形式很多，常常用在病毒代码的变形引擎中，病毒在传播时通过变形引擎随机产生一组该类别花指令并插入到病毒正常代码中，可以改变病毒的特征码，从而起到变形的作用。</li>
-</ul>
-<h3 id="不可执行花指令"><a href="#不可执行花指令" class="headerlink" title="不可执行花指令"></a>不可执行花指令</h3><ul>
-<li>不可执行花指令是指被插入到原始代码中但又不改变原始程序逻辑性的一组无用字节。这类花指令有如下特点：①不可以正常运行；②不改变任何寄存器的值；③反汇编器可能会错误反汇编这些字节。根据反汇编的工作原理，只有当花指令同正常指令的开始几个字节被反汇编器识别成一条指令时，才能有效破坏反汇编的结果。因此，插入的花指令应当是一些不完整的指令，被插入的不完整指令可以是随机选择的。正因为不可执行花指令有这些特点，该类花指令才能应用到软件保护中。Cullen等人指出为了能够有效“迷惑”静态反汇编工具，同时保证代码的正确运行，花指令必须满足两个基本特征，即：  1)垃圾数据必须是某个合法指令的一部分：  </li>
-</ul>
-<p>2)程序运行时，花指令必须位于实际不可执行的代码路径。</p>
-<h2 id="线性扫描和行递归"><a href="#线性扫描和行递归" class="headerlink" title="线性扫描和行递归"></a>线性扫描和行递归</h2><ul>
-<li>不可执行花指令的成功产生主要来自反汇编算法的缺陷，而当前反汇编算法主要分为两种，线性递归扫描和行递归扫描</li>
-</ul>
-<h3 id="线性扫描算法"><a href="#线性扫描算法" class="headerlink" title="线性扫描算法"></a>线性扫描算法</h3><ul>
-<li>线性扫描算法p1从程序的入口点开始反汇编，然后对整个代码段进行扫描，反汇编扫描过程中所遇到的每条指令。线性扫描算法的缺点在于在冯诺依曼体系结构下，无法区分数据与代码，从而导致将代码段中嵌入的数据误解释为指令的操作码，以致最后得到错误的反汇编结果。</li>
-</ul>
-<h3 id="行递归算法"><a href="#行递归算法" class="headerlink" title="行递归算法"></a>行递归算法</h3><ul>
-<li>相比线性扫描算法，行进递归算法通过程序的控制流来确定反汇编的下一条指令，遇到非控制转移指令时顺序进行反汇编，而遇到控制转移指令时则从转移地址处开始进行反汇编。行进递归算法的缺点在于准确确定间接转移目的地址的难度较大。</li>
-</ul>
-<h2 id="常见花指令"><a href="#常见花指令" class="headerlink" title="常见花指令"></a>常见花指令</h2><ul>
-<li>jx + jnx </li>
-</ul>
-<img src="/2022/02/03/hua-zhi-ling/image1.jpg" class="">  
+<img src="/2022/03/03/ni-xiang-zhi-lu-de-di-san-zhou/image1.jpg" class="">  
 
 <ul>
-<li>call+pop/add esp/add [esp] + retn</li>
+<li>所以解题代码如下</li>
 </ul>
-<img src="/2022/02/03/hua-zhi-ling/image2.jpg" class="">
+<pre><code>data = "}|{zyxwvutsrqponmlkjihgfedcba`_^]\[ZYXWVUTSRQPONMLKJIHGFEDCBA@?&gt;=&lt;;:9876543210/.-,+*)('&amp;%$# !\""
+s = "*F'\"N,\"(I?+@"
+flag =""
+for i in range(len(s)):
+    j = data.find(s[i])
+    flag += chr(j + 1 - i)
+print(flag)
+</code></pre>
+<h2 id="Buuctf-Rome"><a href="#Buuctf-Rome" class="headerlink" title="Buuctf Rome"></a>Buuctf Rome</h2><ul>
+<li>这是一道简单的加密题目，<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[ACTF%E6%96%B0%E7%94%9F%E8%B5%9B2020]rome">Rome</a>,查壳发现没有壳所以直接放到ida里面</li>
+<li>关键代码如下，加密方式有点类似于凯撒加密，只不过对大小写字母分别移动，小写字母移动14位，大写字母移动18位</li>
+</ul>
+<img src="/2022/03/03/ni-xiang-zhi-lu-de-di-san-zhou/image2.jpg" class="">
 
 <ul>
-<li>stx/jx</li>
+<li>解题代码如下</li>
 </ul>
-<img src="/2022/02/03/hua-zhi-ling/image3.jpg" class="">
+<pre><code>flag=''
+v12='Qsw3sj_lz4_Ujw@l'
+for i in range(16):
+    for k in range(32,127):
+        z=k
+        if k&gt;64 and k&lt;=90:
+            k=(k-51)%26+65
+        if k&gt;96 and k&lt;=122:
+            k=(k-79)%26+97
+        if chr(k)==v12[i]:
+            flag+=chr(z)
+print(flag)
+</code></pre>
+<h2 id="Buuctf-re"><a href="#Buuctf-re" class="headerlink" title="Buuctf re"></a>Buuctf re</h2><ul>
+<li>这是buuctf里的一道简单题目，<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[GUET-CTF2019]re">re</a> ,主要就是虚拟机里面脱壳然后放到ida里面反汇编一下就可以，关键代码如下</li>
+</ul>
+<img src="/2022/03/03/ni-xiang-zhi-lu-de-di-san-zhou/image3.jpg" class="">
+
+<ul>
+<li>解题代码如下</li>
+</ul>
+<pre><code>a=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+a[0]=chr(166163712//1629056)
+a[1] = chr(731332800 // 6771600)
+a[2] = chr(357245568 // 3682944)
+a[3] = chr(1074393000 // 10431000)
+a[4] = chr(489211344 // 3977328)
+a[5] = chr(518971936 // 5138336)
+a[7] = chr(406741500 // 7532250)
+a[8] = chr(294236496 // 5551632)
+a[9] = chr(177305856 // 3409728)
+a[10] = chr(650683500 // 13013670)
+a[11] = chr(298351053 // 6088797)
+a[12] = chr(386348487 // 7884663)
+a[13] = chr(438258597 // 8944053)
+a[14] = chr(249527520 // 5198490)
+a[15] = chr(445362764 // 4544518)
+a[16] = chr(981182160 // 10115280)
+a[17] = chr(174988800 // 3645600)
+a[18] = chr(493042704 // 9667504)
+a[19] = chr(257493600 // 5364450)
+a[20] = chr(767478780 // 13464540)
+a[21] = chr(312840624 // 5488432)
+a[22] = chr(1404511500 // 14479500)
+a[23] = chr(316139670 // 6451830)
+a[24] = chr(619005024 // 6252576)
+a[25] = chr(372641472 // 7763364)
+a[26] = chr(373693320 // 7327320)
+a[27] = chr(498266640 // 8741520)
+a[28] = chr(452465676 // 8871876)
+a[29] = chr(208422720 // 4086720)
+a[30] = chr(515592000 // 9374400)
+a[31] = chr(719890500 // 5759124)
+for i in range(32):
+    print(a[i],end='')
+</code></pre>
+<ul>
+<li>得到 flag{e065421110ba03099a1c039337}，但是这不是最终的答案，因为仔细观察关键函数发现是没有a[6]的，而且还有一个细节就是a[16]和a[17]的顺序是颠倒的，需要仔细观察，至于a[6]这一位，反正也只能是0–9和a–z其中的一个，可以一个个的尝试进行爆破，最终得出正确答案为flag{e165421110ba03099a1c039337}</li>
+</ul>
+<h2 id="Buuctf-level"><a href="#Buuctf-level" class="headerlink" title="Buuctf level"></a>Buuctf level</h2><ul>
+<li>这是buuctf里的一道巨简单题目，<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[WUSTCTF2020]level2">level2</a> ,主要就是虚拟机里面脱壳然后放到ida里面反汇编一下就可以看到答案，关键代码如下</li>
+</ul>
+<img src="/2022/03/03/ni-xiang-zhi-lu-de-di-san-zhou/image4.jpg" class="">
+
+<h2 id="Buuctf-Maze"><a href="#Buuctf-Maze" class="headerlink" title="Buuctf Maze"></a>Buuctf Maze</h2><ul>
+<li>这是buuctf里的一道题目，<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[HDCTF2019]Maze">Maze</a> ,首先还是放到虚拟机里面upx -d “文件名”脱壳一下，然后放ida里面，这是会发现这是一个含有花指令的程序，没有main函数并且ida代码段里标注有红色</li>
+</ul>
+<img src="/2022/03/03/ni-xiang-zhi-lu-de-di-san-zhou/image5.jpg" class="">
+
+<ul>
+<li>其中这里jnz跳转到了下一行代码，相当于没跳转，因为这一段代码即使不是jnz执行完了程序依旧会跳转到下一行代码，所以先用keypatch将jnz给nop掉</li>
+</ul>
+<img src="/2022/03/03/ni-xiang-zhi-lu-de-di-san-zhou/image6.jpg" class="">
+
+<ul>
+<li>然后就是下面call跳转这一行，即ida代码段标注红色的部分,这是一个跳转指令，但是这个地址是错误的，调用了一个不是地址的地址，可以推断出这段代码添加了花指令，IDA分析失败了，而这段call 指令并不能像上面的jnz一样全部nop掉，因为nop掉了发现依然没法F5反汇编，所以我们选中0EC85D78Bh，按D将其转换为字节数据</li>
+</ul>
+<img src="/2022/03/03/ni-xiang-zhi-lu-de-di-san-zhou/image7.jpg" class="">
+
+<ul>
+<li>而db 0E8h这条指令是添加的花指令，将其nop掉</li>
+</ul>
+<img src="/2022/03/03/ni-xiang-zhi-lu-de-di-san-zhou/image8.jpg" class="">
+
+<ul>
+<li>此时你会发现关键代码的地址全部变为了红色，别急，鼠标选中关键代码区域，按P将其声明为函数，然后你就会发现出线了main函数，可以F5反汇编了！</li>
+<li>最后就是常规的走迷宫，答案为flag{ssaaasaassdddw}</li>
+</ul>
+
                 
             </div>
             <hr/>
@@ -466,7 +547,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://zhangjc00.github.io/2022/02/03/hua-zhi-ling/">http://zhangjc00.github.io/2022/02/03/hua-zhi-ling/</a>
+                    <a href="http://zhangjc00.github.io/2022/03/03/ni-xiang-zhi-lu-de-di-san-zhou/">http://zhangjc00.github.io/2022/03/03/ni-xiang-zhi-lu-de-di-san-zhou/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -675,9 +756,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2022/03/03/ni-xiang-zhi-lu-de-di-san-zhou/">
                     <div class="card-image">
@@ -695,9 +777,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-03-03
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-03
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -706,6 +788,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -724,13 +807,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/01/29/ni-xiang-fen-xi-xtea-jia-mi/">
+                <a href="/2022/02/03/hua-zhi-ling/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="逆向分析-XTEA加密">
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="花指令">
                         
-                        <span class="card-title">逆向分析-XTEA加密</span>
+                        <span class="card-title">花指令</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -741,7 +824,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-29
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-02-03
                             </span>
                         <span class="publish-author">
                             
@@ -754,8 +837,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Reverse-Crypto/">
-                        <span class="chip bg-color">Reverse Crypto</span>
+                    <a href="/tags/Reverse/">
+                        <span class="chip bg-color">Reverse</span>
                     </a>
                     
                 </div>

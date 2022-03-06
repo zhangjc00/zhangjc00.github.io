@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>逆向之路的第三周</title>
+      <link href="/2022/03/03/ni-xiang-zhi-lu-de-di-san-zhou/"/>
+      <url>/2022/03/03/ni-xiang-zhi-lu-de-di-san-zhou/</url>
+      
+        <content type="html"><![CDATA[<h2 id="Buuctf-easyre1"><a href="#Buuctf-easyre1" class="headerlink" title="Buuctf easyre1"></a>Buuctf easyre1</h2><ul><li>这是buuctf里的一道简单题目，<a href="https://buuoj.cn/challenges#[ACTF%E6%96%B0%E7%94%9F%E8%B5%9B2020]easyre">easyre1</a> ,主要就是脱壳然后放到ida里面反汇编一下就可以，关键代码如下</li></ul><img src="/2022/03/03/ni-xiang-zhi-lu-de-di-san-zhou/image1.jpg" class="">  <ul><li>所以解题代码如下</li></ul><pre><code>data = "}|{zyxwvutsrqponmlkjihgfedcba`_^]\[ZYXWVUTSRQPONMLKJIHGFEDCBA@?&gt;=&lt;;:9876543210/.-,+*)('&amp;%$# !\""s = "*F'\"N,\"(I?+@"flag =""for i in range(len(s)):    j = data.find(s[i])    flag += chr(j + 1 - i)print(flag)</code></pre><h2 id="Buuctf-Rome"><a href="#Buuctf-Rome" class="headerlink" title="Buuctf Rome"></a>Buuctf Rome</h2><ul><li>这是一道简单的加密题目，<a href="https://buuoj.cn/challenges#[ACTF%E6%96%B0%E7%94%9F%E8%B5%9B2020]rome">Rome</a>,查壳发现没有壳所以直接放到ida里面</li><li>关键代码如下，加密方式有点类似于凯撒加密，只不过对大小写字母分别移动，小写字母移动14位，大写字母移动18位</li></ul><img src="/2022/03/03/ni-xiang-zhi-lu-de-di-san-zhou/image2.jpg" class=""><ul><li>解题代码如下</li></ul><pre><code>flag=''v12='Qsw3sj_lz4_Ujw@l'for i in range(16):    for k in range(32,127):        z=k        if k&gt;64 and k&lt;=90:            k=(k-51)%26+65        if k&gt;96 and k&lt;=122:            k=(k-79)%26+97        if chr(k)==v12[i]:            flag+=chr(z)print(flag)</code></pre><h2 id="Buuctf-re"><a href="#Buuctf-re" class="headerlink" title="Buuctf re"></a>Buuctf re</h2><ul><li>这是buuctf里的一道简单题目，<a href="https://buuoj.cn/challenges#[GUET-CTF2019]re">re</a> ,主要就是虚拟机里面脱壳然后放到ida里面反汇编一下就可以，关键代码如下</li></ul><img src="/2022/03/03/ni-xiang-zhi-lu-de-di-san-zhou/image3.jpg" class=""><ul><li>解题代码如下</li></ul><pre><code>a=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]a[0]=chr(166163712//1629056)a[1] = chr(731332800 // 6771600)a[2] = chr(357245568 // 3682944)a[3] = chr(1074393000 // 10431000)a[4] = chr(489211344 // 3977328)a[5] = chr(518971936 // 5138336)a[7] = chr(406741500 // 7532250)a[8] = chr(294236496 // 5551632)a[9] = chr(177305856 // 3409728)a[10] = chr(650683500 // 13013670)a[11] = chr(298351053 // 6088797)a[12] = chr(386348487 // 7884663)a[13] = chr(438258597 // 8944053)a[14] = chr(249527520 // 5198490)a[15] = chr(445362764 // 4544518)a[16] = chr(981182160 // 10115280)a[17] = chr(174988800 // 3645600)a[18] = chr(493042704 // 9667504)a[19] = chr(257493600 // 5364450)a[20] = chr(767478780 // 13464540)a[21] = chr(312840624 // 5488432)a[22] = chr(1404511500 // 14479500)a[23] = chr(316139670 // 6451830)a[24] = chr(619005024 // 6252576)a[25] = chr(372641472 // 7763364)a[26] = chr(373693320 // 7327320)a[27] = chr(498266640 // 8741520)a[28] = chr(452465676 // 8871876)a[29] = chr(208422720 // 4086720)a[30] = chr(515592000 // 9374400)a[31] = chr(719890500 // 5759124)for i in range(32):    print(a[i],end='')</code></pre><ul><li>得到 flag{e065421110ba03099a1c039337}，但是这不是最终的答案，因为仔细观察关键函数发现是没有a[6]的，而且还有一个细节就是a[16]和a[17]的顺序是颠倒的，需要仔细观察，至于a[6]这一位，反正也只能是0–9和a–z其中的一个，可以一个个的尝试进行爆破，最终得出正确答案为flag{e165421110ba03099a1c039337}</li></ul><h2 id="Buuctf-level"><a href="#Buuctf-level" class="headerlink" title="Buuctf level"></a>Buuctf level</h2><ul><li>这是buuctf里的一道巨简单题目，<a href="https://buuoj.cn/challenges#[WUSTCTF2020]level2">level2</a> ,主要就是虚拟机里面脱壳然后放到ida里面反汇编一下就可以看到答案，关键代码如下</li></ul><img src="/2022/03/03/ni-xiang-zhi-lu-de-di-san-zhou/image4.jpg" class=""><h2 id="Buuctf-Maze"><a href="#Buuctf-Maze" class="headerlink" title="Buuctf Maze"></a>Buuctf Maze</h2><ul><li>这是buuctf里的一道题目，<a href="https://buuoj.cn/challenges#[HDCTF2019]Maze">Maze</a> ,首先还是放到虚拟机里面upx -d “文件名”脱壳一下，然后放ida里面，这是会发现这是一个含有花指令的程序，没有main函数并且ida代码段里标注有红色</li></ul><img src="/2022/03/03/ni-xiang-zhi-lu-de-di-san-zhou/image5.jpg" class=""><ul><li>其中这里jnz跳转到了下一行代码，相当于没跳转，因为这一段代码即使不是jnz执行完了程序依旧会跳转到下一行代码，所以先用keypatch将jnz给nop掉</li></ul><img src="/2022/03/03/ni-xiang-zhi-lu-de-di-san-zhou/image6.jpg" class=""><ul><li>然后就是下面call跳转这一行，即ida代码段标注红色的部分,这是一个跳转指令，但是这个地址是错误的，调用了一个不是地址的地址，可以推断出这段代码添加了花指令，IDA分析失败了，而这段call 指令并不能像上面的jnz一样全部nop掉，因为nop掉了发现依然没法F5反汇编，所以我们选中0EC85D78Bh，按D将其转换为字节数据</li></ul><img src="/2022/03/03/ni-xiang-zhi-lu-de-di-san-zhou/image7.jpg" class=""><ul><li>而db 0E8h这条指令是添加的花指令，将其nop掉</li></ul><img src="/2022/03/03/ni-xiang-zhi-lu-de-di-san-zhou/image8.jpg" class=""><ul><li>此时你会发现关键代码的地址全部变为了红色，别急，鼠标选中关键代码区域，按P将其声明为函数，然后你就会发现出线了main函数，可以F5反汇编了！</li><li>最后就是常规的走迷宫，答案为flag{ssaaasaassdddw}</li></ul>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Reverse </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>花指令</title>
       <link href="/2022/02/03/hua-zhi-ling/"/>
       <url>/2022/02/03/hua-zhi-ling/</url>

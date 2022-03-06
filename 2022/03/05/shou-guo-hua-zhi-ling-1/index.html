@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="逆向之路的第三周, 开心0v0超人">
+    <meta name="keywords" content="手过花指令1, 开心0v0超人">
     <meta name="description" content="这是很好很长的一生，未来很好，你也是！">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>逆向之路的第三周 | 开心0v0超人</title>
+    <title>手过花指令1 | 开心0v0超人</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -250,12 +250,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/9.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">逆向之路的第三周</h1>
+                    <h1 class="description center-align post-title">手过花指令1</h1>
                 </div>
             </div>
         </div>
@@ -387,7 +387,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-03-03
+                    2022-03-05
                 </div>
                 
 
@@ -408,119 +408,114 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="Buuctf-easyre1"><a href="#Buuctf-easyre1" class="headerlink" title="Buuctf easyre1"></a>Buuctf easyre1</h2><ul>
-<li>这是buuctf里的一道简单题目，<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[ACTF%E6%96%B0%E7%94%9F%E8%B5%9B2020]easyre">easyre1</a> ,主要就是脱壳然后放到ida里面反汇编一下就可以，关键代码如下</li>
+                <ul>
+<li>本博客参考来源：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44352049/article/details/85567929">https://blog.csdn.net/weixin_44352049/article/details/85567929</a></li>
 </ul>
-<img src="/2022/03/03/ni-xiang-zhi-lu-de-di-san-zhou/image1.jpg" class="">  
+<h2 id="侦壳"><a href="#侦壳" class="headerlink" title="侦壳"></a>侦壳</h2><img src="/2022/03/05/shou-guo-hua-zhi-ling-1/image1.jpg" class=""> 
+
+<h2 id="脱壳"><a href="#脱壳" class="headerlink" title="脱壳"></a>脱壳</h2><h3 id="发现问题"><a href="#发现问题" class="headerlink" title="发现问题"></a>发现问题</h3><img src="/2022/03/05/shou-guo-hua-zhi-ling-1/image2.jpg" class=""> 
 
 <ul>
-<li>所以解题代码如下</li>
+<li>用IDA打开后，发现最底下是红色的，且有很多黑色部分（未知）还有大部分的data数据，而且没有发现已解锁的函数(蓝色部分)需要进行脱壳</li>
 </ul>
-<pre><code>data = "}|{zyxwvutsrqponmlkjihgfedcba`_^]\[ZYXWVUTSRQPONMLKJIHGFEDCBA@?&gt;=&lt;;:9876543210/.-,+*)('&amp;%$# !\""
-s = "*F'\"N,\"(I?+@"
-flag =""
-for i in range(len(s)):
-    j = data.find(s[i])
-    flag += chr(j + 1 - i)
-print(flag)
+<h2 id="IDA实现"><a href="#IDA实现" class="headerlink" title="IDA实现"></a>IDA实现</h2><h3 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h3><ul>
+<li>图解部分（不知道应该怎么叫）最上面可以看到上面有个pushad</li>
+</ul>
+<img src="/2022/03/05/shou-guo-hua-zhi-ling-1/image3.jpg" class="">
+
+<ul>
+<li>点击空格键，切换成流程图模式</li>
+</ul>
+<img src="/2022/03/05/shou-guo-hua-zhi-ling-1/image4.jpg" class="">
+
+<ul>
+<li>图中的代码部分</li>
+</ul>
+<pre><code>start    endp    ;sp-analysis failed
 </code></pre>
-<h2 id="Buuctf-Rome"><a href="#Buuctf-Rome" class="headerlink" title="Buuctf Rome"></a>Buuctf Rome</h2><ul>
-<li>这是一道简单的加密题目，<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[ACTF%E6%96%B0%E7%94%9F%E8%B5%9B2020]rome">Rome</a>,查壳发现没有壳所以直接放到ida里面</li>
-<li>关键代码如下，加密方式有点类似于凯撒加密，只不过对大小写字母分别移动，小写字母移动14位，大写字母移动18位</li>
-</ul>
-<img src="/2022/03/03/ni-xiang-zhi-lu-de-di-san-zhou/image2.jpg" class="">
-
-<ul>
-<li>解题代码如下</li>
-</ul>
-<pre><code>flag=''
-v12='Qsw3sj_lz4_Ujw@l'
-for i in range(16):
-    for k in range(32,127):
-        z=k
-        if k&gt;64 and k&lt;=90:
-            k=(k-51)%26+65
-        if k&gt;96 and k&lt;=122:
-            k=(k-79)%26+97
-        if chr(k)==v12[i]:
-            flag+=chr(z)
-print(flag)
+<p>//分号后面的是注释，此处意为【分析失败】</p>
+<pre><code>                ;sub_456189↓p
 </code></pre>
-<h2 id="Buuctf-re"><a href="#Buuctf-re" class="headerlink" title="Buuctf re"></a>Buuctf re</h2><ul>
-<li>这是buuctf里的一道简单题目，<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[GUET-CTF2019]re">re</a> ,主要就是虚拟机里面脱壳然后放到ida里面反汇编一下就可以，关键代码如下</li>
+<p>//此处注释意为【分析交叉引用有冲突】<br>//一般是导航带上深红色区域</p>
+<ul>
+<li>定位到红色出错的CALL按D，转变为数据</li>
 </ul>
-<img src="/2022/03/03/ni-xiang-zhi-lu-de-di-san-zhou/image3.jpg" class="">
+<img src="/2022/03/05/shou-guo-hua-zhi-ling-1/image5.jpg" class="">
+
+<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><ul>
+<li>全部分析错误都没有了，开始人工分析</li>
+</ul>
+<img src="/2022/03/05/shou-guo-hua-zhi-ling-1/image6.jpg" class="">
+
+<img src="/2022/03/05/shou-guo-hua-zhi-ling-1/image7.jpg" class="">
 
 <ul>
-<li>解题代码如下</li>
+<li>因为E8机器码在汇编中会被翻译为call，但是后面的EB OC 00 00会被翻译成call的地址，但是这个地址并不存在，因此会报错。那么就很清楚了，这里不是call而是jmp到一个地址光标定位到下一行EB，按C，将数据转换为代码</li>
 </ul>
-<pre><code>a=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-a[0]=chr(166163712//1629056)
-a[1] = chr(731332800 // 6771600)
-a[2] = chr(357245568 // 3682944)
-a[3] = chr(1074393000 // 10431000)
-a[4] = chr(489211344 // 3977328)
-a[5] = chr(518971936 // 5138336)
-a[7] = chr(406741500 // 7532250)
-a[8] = chr(294236496 // 5551632)
-a[9] = chr(177305856 // 3409728)
-a[10] = chr(650683500 // 13013670)
-a[11] = chr(298351053 // 6088797)
-a[12] = chr(386348487 // 7884663)
-a[13] = chr(438258597 // 8944053)
-a[14] = chr(249527520 // 5198490)
-a[15] = chr(445362764 // 4544518)
-a[16] = chr(981182160 // 10115280)
-a[17] = chr(174988800 // 3645600)
-a[18] = chr(493042704 // 9667504)
-a[19] = chr(257493600 // 5364450)
-a[20] = chr(767478780 // 13464540)
-a[21] = chr(312840624 // 5488432)
-a[22] = chr(1404511500 // 14479500)
-a[23] = chr(316139670 // 6451830)
-a[24] = chr(619005024 // 6252576)
-a[25] = chr(372641472 // 7763364)
-a[26] = chr(373693320 // 7327320)
-a[27] = chr(498266640 // 8741520)
-a[28] = chr(452465676 // 8871876)
-a[29] = chr(208422720 // 4086720)
-a[30] = chr(515592000 // 9374400)
-a[31] = chr(719890500 // 5759124)
-for i in range(32):
-    print(a[i],end='')
+<img src="/2022/03/05/shou-guo-hua-zhi-ling-1/image8.jpg" class="">
+
+<ul>
+<li>至此，一处花搞定。那什么叫做花指令呢，就是在本来正常的顺序下，让其不停跳转，中间一些永远不会执行到的地方，加上一些其他字符，使反编译器无法正常分析，就达到了在一定程度上保护程序的功效。这个截图上，除了这一处，还有一处，如下图</li>
+</ul>
+<img src="/2022/03/05/shou-guo-hua-zhi-ling-1/image9.jpg" class="">
+
+<ul>
+<li>这个near ptr byte_4560FF也是不知其为何物。分析一下，发现这个一整段都是花，没有意义</li>
+</ul>
+<img src="/2022/03/05/shou-guo-hua-zhi-ling-1/image10.jpg" class="">
+
+<h2 id="花指令"><a href="#花指令" class="headerlink" title="花指令"></a>花指令</h2><ul>
+<li>一堆花加在一起，是为花指令<br>这个例子中，有以下几种情形(分析出来类型，方便接下来用脚本去除所有的花指令)<br>本来想用Md的Flowchart流程图写一下大概流程的。。<br>试了几次，放弃了<br>反正asm汇编的代码也算是很好懂的。</li>
+</ul>
+<h3 id="情形一"><a href="#情形一" class="headerlink" title="情形一"></a>情形一</h3><pre><code>call label1
+    db 0E8h
+label2:
+    jmp label3
+    db 0
+    db 0
+    db 0E8h
+    db 0F6h
+    db 0FFh
+    db OFFh
+    db OFFh
+label1: 
+    :call label2
+label3:
+    add esp,8
 </code></pre>
-<ul>
-<li>得到 flag{e065421110ba03099a1c039337}，但是这不是最终的答案，因为仔细观察关键函数发现是没有a[6]的，而且还有一个细节就是a[16]和a[17]的顺序是颠倒的，需要仔细观察，至于a[6]这一位，反正也只能是0–9和a–z其中的一个，可以一个个的尝试进行爆破，最终得出正确答案为flag{e165421110ba03099a1c039337}</li>
-</ul>
-<h2 id="Buuctf-level"><a href="#Buuctf-level" class="headerlink" title="Buuctf level"></a>Buuctf level</h2><ul>
-<li>这是buuctf里的一道巨简单题目，<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[WUSTCTF2020]level2">level2</a> ,主要就是虚拟机里面脱壳然后放到ida里面反汇编一下就可以看到答案，关键代码如下</li>
-</ul>
-<img src="/2022/03/03/ni-xiang-zhi-lu-de-di-san-zhou/image4.jpg" class="">
-
-<h2 id="Buuctf-Maze"><a href="#Buuctf-Maze" class="headerlink" title="Buuctf Maze"></a>Buuctf Maze</h2><ul>
-<li>这是buuctf里的一道题目，<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[HDCTF2019]Maze">Maze</a> ,首先还是放到虚拟机里面upx -d “文件名”脱壳一下，然后放ida里面，这是会发现这是一个含有花指令的程序，没有main函数并且ida代码段里标注有红色</li>
-</ul>
-<img src="/2022/03/03/ni-xiang-zhi-lu-de-di-san-zhou/image5.jpg" class="">
-
-<ul>
-<li>其中这里jnz跳转到了下一行代码，相当于没跳转，因为这一段代码即使不是jnz执行完了程序依旧会跳转到下一行代码，所以先用keypatch将jnz给nop掉</li>
-</ul>
-<img src="/2022/03/03/ni-xiang-zhi-lu-de-di-san-zhou/image6.jpg" class="">
-
-<ul>
-<li>然后就是下面call跳转这一行，即ida代码段标注红色的部分,这是一个跳转指令，但是这个地址是错误的，调用了一个不是地址的地址，可以推断出这段代码添加了花指令，IDA分析失败了，而这段call 指令并不能像上面的jnz一样全部nop掉，因为nop掉了发现依然没法F5反汇编，所以我们选中0EC85D78Bh，按D将其转换为字节数据</li>
-</ul>
-<img src="/2022/03/03/ni-xiang-zhi-lu-de-di-san-zhou/image7.jpg" class="">
-
-<ul>
-<li>而db 0E8h这条指令是添加的花指令，将其nop掉</li>
-</ul>
-<img src="/2022/03/03/ni-xiang-zhi-lu-de-di-san-zhou/image8.jpg" class="">
-
-<ul>
-<li>此时你会发现关键代码的地址全部变为了红色，别急，鼠标选中关键代码区域，按P将其声明为函数，然后你就会发现出线了main函数，可以F5反汇编了！</li>
-<li>最后就是常规的走迷宫，答案为flag{ssaaasaassdddw}</li>
-</ul>
+<h3 id="情形二"><a href="#情形二" class="headerlink" title="情形二"></a>情形二</h3><pre><code>jz label1
+    jnz label1
+    db 0EBh
+    db2
+label1:
+    jmp label2
+    db 81h
+label2:
+</code></pre>
+<h3 id="情形三"><a href="#情形三" class="headerlink" title="情形三"></a>情形三</h3><pre><code>push eax
+    call label1
+    db 29h
+    db 5Ah
+label1:
+    POP eax
+    imul eax,3
+    call label2
+    db 29h
+    db5Ah
+label2:
+    add esp,4
+    pop eax
+</code></pre>
+<h3 id="情形四"><a href="#情形四" class="headerlink" title="情形四"></a>情形四</h3><pre><code>jmp label1
+    db 68h
+label1: 
+    jmp label2
+    db 0CDh,20h
+label2:
+    jmp label3
+    db 0E8h
+label3:
+</code></pre>
 
                 
             </div>
@@ -547,7 +542,7 @@ for i in range(32):
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://zhangjc00.github.io/2022/03/03/ni-xiang-zhi-lu-de-di-san-zhou/">http://zhangjc00.github.io/2022/03/03/ni-xiang-zhi-lu-de-di-san-zhou/</a>
+                    <a href="http://zhangjc00.github.io/2022/03/05/shou-guo-hua-zhi-ling-1/">http://zhangjc00.github.io/2022/03/05/shou-guo-hua-zhi-ling-1/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -760,13 +755,13 @@ for i in range(32):
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/03/05/shou-guo-hua-zhi-ling-1/">
+                <a href="/2022/03/05/shou-guo-hua-zhi-ling-2/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="手过花指令1">
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="手过花指令2">
                         
-                        <span class="card-title">手过花指令1</span>
+                        <span class="card-title">手过花指令2</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -805,13 +800,13 @@ for i in range(32):
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/02/03/hua-zhi-ling/">
+                <a href="/2022/03/03/ni-xiang-zhi-lu-de-di-san-zhou/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="花指令">
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="逆向之路的第三周">
                         
-                        <span class="card-title">花指令</span>
+                        <span class="card-title">逆向之路的第三周</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -822,7 +817,7 @@ for i in range(32):
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-02-03
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-03
                             </span>
                         <span class="publish-author">
                             

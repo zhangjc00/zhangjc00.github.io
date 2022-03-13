@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="逆向之路的第四周, 开心0v0超人">
+    <meta name="keywords" content="汇编堆栈平衡, 开心0v0超人">
     <meta name="description" content="这是很好很长的一生，未来很好，你也是！">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>逆向之路的第四周 | 开心0v0超人</title>
+    <title>汇编堆栈平衡 | 开心0v0超人</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -250,12 +250,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">逆向之路的第四周</h1>
+                    <h1 class="description center-align post-title">汇编堆栈平衡</h1>
                 </div>
             </div>
         </div>
@@ -369,13 +369,9 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                    <div class="article-tag">
-                        
-                            <a href="/tags/Reverse/">
-                                <span class="chip bg-color">Reverse</span>
-                            </a>
-                        
-                    </div>
+                          <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                          </div>
                     
                 </div>
                 <div class="col s5 right-align">
@@ -387,7 +383,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-03-10
+                    2022-03-12
                 </div>
                 
 
@@ -408,132 +404,46 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="Buuctf-xor"><a href="#Buuctf-xor" class="headerlink" title="Buuctf xor"></a>Buuctf xor</h2><ul>
-<li>这是buuctf里的一道简单题目，<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[MRCTF2020]Xor">xor</a> ,查壳发现无壳，放进ida里面F5反汇编一下发现出现错误</li>
+                <p> Reverse</p>
+<h2 id="什么是堆栈平衡"><a href="#什么是堆栈平衡" class="headerlink" title="什么是堆栈平衡"></a>什么是堆栈平衡</h2><p>这里有两种情况：</p>
+<ul>
+<li>如果要返回父程序，则当我们在堆栈中进行堆栈操作的时候，一定要保证在RET这条指令之前，ESP指向的是压入的我们压入的地址<br>这句话我是这么理解的，就是当你调用函数的时候，比如使用CALL指令，当使用堆栈的时候，使用前ESP指向那个地址，使用后RET返回前就必须是那个地址，如果不是那个地址，那么堆栈就是不平衡的，程序就崩溃了。</li>
 </ul>
-<img src="/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/image1.jpg" class=""> 
+<p>直接上图分析一下：</p>
+<img src="/2022/03/12/hui-bian-dui-zhan-ping-heng/image1.jpg" class=""> 
+
+<p>这个程序运行起来以后一定是会崩溃的，在函数执行结束前，它使用了堆栈，向栈顶push了eax的值，使栈顶指针ESP的值-4，这样ret程序就飞了，因为push把它带到了另一个世界</p>
+<img src="/2022/03/12/hui-bian-dui-zhan-ping-heng/image2.jpg" class=""> 
+
+<p>运行结果：</p>
+<p>可以看到，反汇编窗口直接没了，原因就是他没有00000003这个地址，程序就这样飞走了，这是第一种情况。</p>
+<img src="/2022/03/12/hui-bian-dui-zhan-ping-heng/image3.jpg" class="">
 
 <ul>
-<li>不能反汇编，这个错误产生的原因一般有两种：<br>IDA无法识别出正确的调用约定。<br>IDA无法识别出正确的参数个数。</li>
-<li>而上面报错时提示的就是call 函数分析失败，所以我们找到 call    sub_401020点击进入，反汇编一下，这时发现main函数也可以反汇编了</li>
+<li>如果通过堆栈传递参数了。那么在程序执行完毕后，要平衡因参数导致的堆栈变化<br>这句话的意思就是，当我们使用堆栈传参的时候，在程序执行完毕后这些参数应该一起被清理掉，也就是加了几条参数，就要在堆栈中加几个地址，这么做可以理解为清理垃圾。</li>
 </ul>
-<img src="/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/image2.jpg" class=""> 
+<p>上图分析一波：</p>
+<p>这是第一次堆栈传参，在程序执行完毕前，堆栈一直都是平衡的，也没有垃圾可以清理，但如果我们需要接着向堆栈中压入数据，那么程序执行完毕后的垃圾就出现了。</p>
+<img src="/2022/03/12/hui-bian-dui-zhan-ping-heng/image4.jpg" class="">
+
+<p>这是第二次传参：之前程序执行结束后的参数没有被清理，导致后面的参数直接依次压入栈顶，多使用了两个地址，后边的000000001与000000002我们都不会再用了，但是没有被覆盖掉，这样多几个堆栈传参操作，程序的性能就会越来越差，直至崩溃。</p>
+<img src="/2022/03/12/hui-bian-dui-zhan-ping-heng/image5.jpg" class="">
+
+<h2 id="如何进行堆栈平衡"><a href="#如何进行堆栈平衡" class="headerlink" title="如何进行堆栈平衡"></a>如何进行堆栈平衡</h2><ul>
+<li>外方栈</li>
+</ul>
+<p>就是从程序外部加一行代码去平衡堆栈，方法很简单，程序执行结束多用几个地址就多加几个地址。注意观察堆栈的变化。</p>
+<img src="/2022/03/12/hui-bian-dui-zhan-ping-heng/image6.jpg" class="">
 
 <ul>
-<li>最后就是写异或脚本</li>
+<li>内平栈</li>
 </ul>
-<pre><code>tmp=[0x4D,0x53, 0x41, 0x57, 0x42, 0x7E, 0x46, 0x58, 0x5A, 0x3A,0x4A,0x3A, 0x60, 0x74, 0x51, 0x4A, 0x22, 0x4E, 0x40, 0x20,0x62, 0x70, 0x64, 0x64, 0x7D, 0x38, 0x67]
-flag=""
-for i in range(27):
-    print( chr(i^tmp[i]),end = "")
-</code></pre>
-<h2 id="Buuctf-xxor"><a href="#Buuctf-xxor" class="headerlink" title="Buuctf xxor"></a>Buuctf xxor</h2><ul>
-<li>这是buuctf里的一道简单题目，<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[GWCTF%202019]xxor">xxor</a></li>
-</ul>
-<img src="/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/image3.jpg" class="">
+<p>就是改变ret返回时esp栈顶指针的变化，用几个参数就加几个地址。注意观察堆栈的变化。</p>
+<p>这里向堆栈传递了2个参数，我们在程序执行完毕前加了条ret 8，程序执行完毕后栈顶指针ESP的值就会多+8，这样就完美清理我们传递的那两个参数所占用的地址了。</p>
+<p>运行结果：</p>
+<img src="/2022/03/12/hui-bian-dui-zhan-ping-heng/image7.jpg" class="">
 
-<ul>
-<li>分析main函数，主要就是输入六个数据，在经过两次处理后的得到的数据，将其转成16进制再变成字符串，其中我们需要让if里面的值为1，点开sub_400770函数</li>
-</ul>
-<img src="/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/image4.jpg" class="">
-
-<p>-通过分析得出六个数据<br>xora[0] = 3746099070;<br>xora[1] = 550153460;<br>xora[2] = 3774025685;<br>xora[3] = 1548802262;<br>xora[4] = 2652626477;<br>xora[5] = 2230518816;</p>
-<ul>
-<li>往上走，发现sub_400686(&amp;dword_601078, &amp;unk_601060)函数，这个函数对我们的输入进行</li>
-<li>然后就是unk_601060，里面就四个有用的数据，2，2,3,4，所以我们打开sub_400686(&amp;dword_601078, &amp;unk_601060)函数，分析里面的加密代码，然后逆着写脚本,得到输出数据后将16进制数转换为字符串得到flag</li>
-</ul>
-<pre><code>int main()
-{
-    unsigned int xora[6];
-    xora[0] = 3746099070;
-    xora[1] = 550153460;
-    xora[2] = 3774025685;
-    xora[3] = 1548802262;
-    xora[4] = 2652626477;
-    xora[5] = 2230518816;
-    int i = 0,j=0,sum;
-    unsigned int temp[2] = {0};
-    unsigned int data[4] = { 2,2,3,4 };
-    for (i = 0; i &lt; 5; i += 2)
-    {
-        temp[0] = xora[i];
-        temp[1] = xora[i + 1];
-
-        sum = 0x458BCD42 * 64;
-        for (j = 0; j &lt; 64; j++)
-        {
-            temp[1] -= (temp[0] + sum + 20) ^ ((temp[0] &lt;&lt; 6) + 3) ^ ((temp[0] &gt;&gt; 9) + 4) ^ 0x10;
-            temp[0] -= (temp[1] + sum + 11) ^ ((temp[1] &lt;&lt; 6) + 2) ^ ((temp[1] &gt;&gt; 9) + 2) ^ 0x20;
-            sum -= 0x458BCD42;
-        }
-        xora[i] = temp[0];
-        xora[i + 1] = temp[1];
-    }
-    for (i = 0; i &lt; 6; i++)
-    printf("%x",xora[i]);
-
-}
-</code></pre>
-<h2 id="Buuctf-hello-world-go"><a href="#Buuctf-hello-world-go" class="headerlink" title="Buuctf hello_world_go"></a>Buuctf hello_world_go</h2><ul>
-<li><p>这是buuctf里的一道简单题目，<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[MRCTF2020]hello_world_go">hello_world_go</a></p>
-</li>
-<li><p>我们直接把文件的后缀名改为.txt，然后查找flag</p>
-</li>
-</ul>
-<img src="/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/image5.jpg" class="">
-
-<h2 id="Buuctf-level3"><a href="#Buuctf-level3" class="headerlink" title="Buuctf level3"></a>Buuctf level3</h2><ul>
-<li><p>这是buuctf里的一道题目，<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[WUSTCTF2020]level3">level3</a></p>
-</li>
-<li><p>无壳，拖入IDA反汇编分析发现就是变种的base64加密</p>
-</li>
-</ul>
-<img src="/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/image7.jpg" class="">
-
-<ul>
-<li>然后是变化后的base64码表</li>
-</ul>
-<img src="/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/image6.jpg" class="">
-
-<ul>
-<li>解密函数</li>
-</ul>
-<pre><code>import base64
-
-table = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='
-model = list("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=")
-s = "d2G0ZjLwHjS7DmOzZAY0X2lzX3CoZV9zdNOydO9vZl9yZXZlcnGlfD=="
-
-for i in range(10):
-    model[i], model[19-i] = model[19-i], model[i]
-model = ''.join(model)
-table = str.maketrans(model, table)
-print (base64.b64decode(s.translate(table)))
-</code></pre>
-<h2 id="Buuctf-lgnitiMe"><a href="#Buuctf-lgnitiMe" class="headerlink" title="Buuctf lgnitiMe"></a>Buuctf lgnitiMe</h2><ul>
-<li><p>这是buuctf里的一道题目，<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[FlareOn4]IgniteMe">lgniteMe</a></p>
-</li>
-<li><p>查壳发现无壳，所以我们直接放到IDA里面分析，但是发现main函数，既然没有main函数那么我们就看start函数</p>
-</li>
-</ul>
-<img src="/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/image7.jpg" class="">
-
-<ul>
-<li><p>发现就两个函数有用，sub_4010F0和sub_401050</p>
-</li>
-<li><p>sub_4010F0,去掉输入字符中的’\n’和’\r’</p>
-</li>
-</ul>
-<img src="/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/image9.jpg" class="">
-
-<ul>
-<li>sub_401050</li>
-</ul>
-<img src="/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/image10.jpg" class="">
-
-<ul>
-<li>代码的逻辑好理解，问题就是V4的第一个值，即sub_401000不知道看了网上的wp都是用OD动态分析，我目前还不会，先记录一下，等会了再来解决</li>
-</ul>
+<p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_43573676/article/details/104376354?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522164714491116780265460653%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&amp;request_id=164714491116780265460653&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~rank_v31_ecpm-7-104376354.pc_search_result_cache&amp;utm_term=%E9%80%86%E5%90%91%E8%B0%83%E5%A0%86%E6%A0%88%E5%B9%B3%E8%A1%A1&amp;spm=1018.2226.3001.4187">https://blog.csdn.net/qq_43573676/article/details/104376354?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522164714491116780265460653%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&amp;request_id=164714491116780265460653&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~rank_v31_ecpm-7-104376354.pc_search_result_cache&amp;utm_term=%E9%80%86%E5%90%91%E8%B0%83%E5%A0%86%E6%A0%88%E5%B9%B3%E8%A1%A1&amp;spm=1018.2226.3001.4187</a></p>
 
                 
             </div>
@@ -560,7 +470,7 @@ print (base64.b64decode(s.translate(table)))
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://zhangjc00.github.io/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/">http://zhangjc00.github.io/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/</a>
+                    <a href="http://zhangjc00.github.io/2022/03/12/hui-bian-dui-zhan-ping-heng/">http://zhangjc00.github.io/2022/03/12/hui-bian-dui-zhan-ping-heng/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -597,11 +507,7 @@ print (base64.b64decode(s.translate(table)))
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            
-                                <a href="/tags/Reverse/">
-                                    <span class="chip bg-color">Reverse</span>
-                                </a>
-                            
+                            <span class="chip bg-color">无标签</span>
                         </div>
                     
                 </div>
@@ -769,9 +675,48 @@ print (base64.b64decode(s.translate(table)))
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2022/03/12/hui-bian-dui-zhan-ping-heng/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="汇编堆栈平衡">
+                        
+                        <span class="card-title">汇编堆栈平衡</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-12
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            开心OvO超人
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
             <div class="card">
                 <a href="/2022/03/11/ke-zhi-xing-wen-jian-de-ke/">
                     <div class="card-image">
@@ -789,53 +734,8 @@ print (base64.b64decode(s.translate(table)))
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-03-11
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-user fa-fw"></i>
-                            开心OvO超人
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/Reverse/">
-                        <span class="chip bg-color">Reverse</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2022/03/05/shou-guo-hua-zhi-ling-2/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="手过花指令2">
-                        
-                        <span class="card-title">手过花指令2</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-05
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-11
                             </span>
                         <span class="publish-author">
                             

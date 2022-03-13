@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>逆向之路的第四周</title>
+      <link href="/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/"/>
+      <url>/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/</url>
+      
+        <content type="html"><![CDATA[<h2 id="Buuctf-xor"><a href="#Buuctf-xor" class="headerlink" title="Buuctf xor"></a>Buuctf xor</h2><ul><li>这是buuctf里的一道简单题目，<a href="https://buuoj.cn/challenges#[MRCTF2020]Xor">xor</a> ,查壳发现无壳，放进ida里面F5反汇编一下发现出现错误</li></ul><img src="/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/image1.jpg" class=""> <ul><li>不能反汇编，这个错误产生的原因一般有两种：<br>IDA无法识别出正确的调用约定。<br>IDA无法识别出正确的参数个数。</li><li>而上面报错时提示的就是call 函数分析失败，所以我们找到 call    sub_401020点击进入，反汇编一下，这时发现main函数也可以反汇编了</li></ul><img src="/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/image2.jpg" class=""> <ul><li>最后就是写异或脚本</li></ul><pre><code>tmp=[0x4D,0x53, 0x41, 0x57, 0x42, 0x7E, 0x46, 0x58, 0x5A, 0x3A,0x4A,0x3A, 0x60, 0x74, 0x51, 0x4A, 0x22, 0x4E, 0x40, 0x20,0x62, 0x70, 0x64, 0x64, 0x7D, 0x38, 0x67]flag=""for i in range(27):    print( chr(i^tmp[i]),end = "")</code></pre><h2 id="Buuctf-xxor"><a href="#Buuctf-xxor" class="headerlink" title="Buuctf xxor"></a>Buuctf xxor</h2><ul><li>这是buuctf里的一道简单题目，<a href="https://buuoj.cn/challenges#[GWCTF%202019]xxor">xxor</a></li></ul><img src="/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/image3.jpg" class=""><ul><li>分析main函数，主要就是输入六个数据，在经过两次处理后的得到的数据，将其转成16进制再变成字符串，其中我们需要让if里面的值为1，点开sub_400770函数</li></ul><img src="/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/image4.jpg" class=""><p>-通过分析得出六个数据<br>xora[0] = 3746099070;<br>xora[1] = 550153460;<br>xora[2] = 3774025685;<br>xora[3] = 1548802262;<br>xora[4] = 2652626477;<br>xora[5] = 2230518816;</p><ul><li>往上走，发现sub_400686(&amp;dword_601078, &amp;unk_601060)函数，这个函数对我们的输入进行</li><li>然后就是unk_601060，里面就四个有用的数据，2，2,3,4，所以我们打开sub_400686(&amp;dword_601078, &amp;unk_601060)函数，分析里面的加密代码，然后逆着写脚本,得到输出数据后将16进制数转换为字符串得到flag</li></ul><pre><code>int main(){    unsigned int xora[6];    xora[0] = 3746099070;    xora[1] = 550153460;    xora[2] = 3774025685;    xora[3] = 1548802262;    xora[4] = 2652626477;    xora[5] = 2230518816;    int i = 0,j=0,sum;    unsigned int temp[2] = {0};    unsigned int data[4] = { 2,2,3,4 };    for (i = 0; i &lt; 5; i += 2)    {        temp[0] = xora[i];        temp[1] = xora[i + 1];        sum = 0x458BCD42 * 64;        for (j = 0; j &lt; 64; j++)        {            temp[1] -= (temp[0] + sum + 20) ^ ((temp[0] &lt;&lt; 6) + 3) ^ ((temp[0] &gt;&gt; 9) + 4) ^ 0x10;            temp[0] -= (temp[1] + sum + 11) ^ ((temp[1] &lt;&lt; 6) + 2) ^ ((temp[1] &gt;&gt; 9) + 2) ^ 0x20;            sum -= 0x458BCD42;        }        xora[i] = temp[0];        xora[i + 1] = temp[1];    }    for (i = 0; i &lt; 6; i++)    printf("%x",xora[i]);}</code></pre><h2 id="Buuctf-hello-world-go"><a href="#Buuctf-hello-world-go" class="headerlink" title="Buuctf hello_world_go"></a>Buuctf hello_world_go</h2><ul><li><p>这是buuctf里的一道简单题目，<a href="https://buuoj.cn/challenges#[MRCTF2020]hello_world_go">hello_world_go</a></p></li><li><p>我们直接把文件的后缀名改为.txt，然后查找flag</p></li></ul><img src="/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/image5.jpg" class=""><h2 id="Buuctf-level3"><a href="#Buuctf-level3" class="headerlink" title="Buuctf level3"></a>Buuctf level3</h2><ul><li><p>这是buuctf里的一道题目，<a href="https://buuoj.cn/challenges#[WUSTCTF2020]level3">level3</a></p></li><li><p>无壳，拖入IDA反汇编分析发现就是变种的base64加密</p></li></ul><img src="/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/image7.jpg" class=""><ul><li>然后是变化后的base64码表</li></ul><img src="/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/image6.jpg" class=""><ul><li>解密函数</li></ul><pre><code>import base64table = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='model = list("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=")s = "d2G0ZjLwHjS7DmOzZAY0X2lzX3CoZV9zdNOydO9vZl9yZXZlcnGlfD=="for i in range(10):    model[i], model[19-i] = model[19-i], model[i]model = ''.join(model)table = str.maketrans(model, table)print (base64.b64decode(s.translate(table)))</code></pre><h2 id="Buuctf-lgnitiMe"><a href="#Buuctf-lgnitiMe" class="headerlink" title="Buuctf lgnitiMe"></a>Buuctf lgnitiMe</h2><ul><li><p>这是buuctf里的一道题目，<a href="https://buuoj.cn/challenges#[FlareOn4]IgniteMe">lgniteMe</a></p></li><li><p>查壳发现无壳，所以我们直接放到IDA里面分析，但是发现main函数，既然没有main函数那么我们就看start函数</p></li></ul><img src="/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/image7.jpg" class=""><ul><li><p>发现就两个函数有用，sub_4010F0和sub_401050</p></li><li><p>sub_4010F0,去掉输入字符中的’\n’和’\r’</p></li></ul><img src="/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/image9.jpg" class=""><ul><li>sub_401050</li></ul><img src="/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/image10.jpg" class=""><ul><li>代码的逻辑好理解，问题就是V4的第一个值，即sub_401000不知道看了网上的wp都是用OD动态分析，我目前还不会，先记录一下，等会了再来解决</li></ul>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Reverse </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>手过花指令2</title>
       <link href="/2022/03/05/shou-guo-hua-zhi-ling-2/"/>
       <url>/2022/03/05/shou-guo-hua-zhi-ling-2/</url>

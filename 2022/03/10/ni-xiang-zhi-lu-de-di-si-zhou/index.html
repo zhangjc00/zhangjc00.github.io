@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="手过花指令2, 开心0v0超人">
+    <meta name="keywords" content="逆向之路的第四周, 开心0v0超人">
     <meta name="description" content="这是很好很长的一生，未来很好，你也是！">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>手过花指令2 | 开心0v0超人</title>
+    <title>逆向之路的第四周 | 开心0v0超人</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -250,12 +250,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">手过花指令2</h1>
+                    <h1 class="description center-align post-title">逆向之路的第四周</h1>
                 </div>
             </div>
         </div>
@@ -387,7 +387,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-03-05
+                    2022-03-10
                 </div>
                 
 
@@ -408,36 +408,132 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <ul>
-<li>本博客参考来源：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44352049/article/details/85850733">https://blog.csdn.net/weixin_44352049/article/details/85850733</a></li>
+                <h2 id="Buuctf-xor"><a href="#Buuctf-xor" class="headerlink" title="Buuctf xor"></a>Buuctf xor</h2><ul>
+<li>这是buuctf里的一道简单题目，<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[MRCTF2020]Xor">xor</a> ,查壳发现无壳，放进ida里面F5反汇编一下发现出现错误</li>
 </ul>
-<h2 id="花指令的干扰"><a href="#花指令的干扰" class="headerlink" title="花指令的干扰"></a>花指令的干扰</h2><ul>
-<li>因为在花指令的干扰下，无法用OD、IDA之类的软件直接分析<br>（当然可以通过大神已经编写好的插件脱花指令，如果你强调这个没有去花插件快、便捷。那么恭喜你，可以直接关掉页面了，这篇不适合你，这只是为了一起分析、一起学习、一起进步，而不是教你如何使用去花插件。）<br>所以我们要手动分析，<br>但是问题来了，就算手动分析了一处，两处，三处，一个软件里花可能有上百出处，<br>就算全部分析完了，也需要一处处去掉<br>所以需要写一个脚本，帮助自己快速分析花指令。所以需要写一个脚本，帮助自己快速分析花指令。<br>那么如何让程序自动识别和去掉花指令呢</li>
-</ul>
-<h2 id="去除花指令"><a href="#去除花指令" class="headerlink" title="去除花指令"></a>去除花指令</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><ul>
-<li>花指令原理之前已经说过了，就是来回的跳转，然后插入一些垃圾机器码比如单独看起来无效的E8、EB、0等等垃圾数据，使反编译软件无法分析，那么就要分两步去除花指令了。<br>第一步识别哪些是有用的数据，哪些是垃圾数据。第二步：把垃圾数据用nop(0x90h)填充。</li>
-</ul>
-<h3 id="识别垃圾数据"><a href="#识别垃圾数据" class="headerlink" title="识别垃圾数据"></a>识别垃圾数据</h3> <img src="/2022/03/05/shou-guo-hua-zhi-ling-2/image1.jpg" class="">
+<img src="/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/image1.jpg" class=""> 
 
 <ul>
-<li>如图，是上次手动修改的内容，就是有花导致反汇编无法继续分析的一个地方，</li>
+<li>不能反汇编，这个错误产生的原因一般有两种：<br>IDA无法识别出正确的调用约定。<br>IDA无法识别出正确的参数个数。</li>
+<li>而上面报错时提示的就是call 函数分析失败，所以我们找到 call    sub_401020点击进入，反汇编一下，这时发现main函数也可以反汇编了</li>
 </ul>
- <img src="/2022/03/05/shou-guo-hua-zhi-ling-2/image2.jpg" class="">
+<img src="/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/image2.jpg" class=""> 
 
 <ul>
-<li>经过过程梳理（看蓝色箭头）发现其实中间所有的部分都可以nop掉，并不影响程序的运行，</li>
+<li>最后就是写异或脚本</li>
 </ul>
- <img src="/2022/03/05/shou-guo-hua-zhi-ling-2/image3.jpg" class="">
+<pre><code>tmp=[0x4D,0x53, 0x41, 0x57, 0x42, 0x7E, 0x46, 0x58, 0x5A, 0x3A,0x4A,0x3A, 0x60, 0x74, 0x51, 0x4A, 0x22, 0x4E, 0x40, 0x20,0x62, 0x70, 0x64, 0x64, 0x7D, 0x38, 0x67]
+flag=""
+for i in range(27):
+    print( chr(i^tmp[i]),end = "")
+</code></pre>
+<h2 id="Buuctf-xxor"><a href="#Buuctf-xxor" class="headerlink" title="Buuctf xxor"></a>Buuctf xxor</h2><ul>
+<li>这是buuctf里的一道简单题目，<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[GWCTF%202019]xxor">xxor</a></li>
+</ul>
+<img src="/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/image3.jpg" class="">
 
 <ul>
-<li>如图依次按D将其转换为数据同理，分析出需要nop掉的下面的部分<br>（有人会说灰色部分也是花对吧。但是这个不影响反编译，而且为了匹配更多的花，舍弃一句无关紧要的代码不去除也无伤大雅。当然也可以通过和我一起学习后，自己DIY，这个都好说）</li>
+<li>分析main函数，主要就是输入六个数据，在经过两次处理后的得到的数据，将其转成16进制再变成字符串，其中我们需要让if里面的值为1，点开sub_400770函数</li>
 </ul>
- <img src="/2022/03/05/shou-guo-hua-zhi-ling-2/image4.jpg" class="">
+<img src="/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/image4.jpg" class="">
 
-<img src="/2022/03/05/shou-guo-hua-zhi-ling-2/image5.jpg" class="">
+<p>-通过分析得出六个数据<br>xora[0] = 3746099070;<br>xora[1] = 550153460;<br>xora[2] = 3774025685;<br>xora[3] = 1548802262;<br>xora[4] = 2652626477;<br>xora[5] = 2230518816;</p>
+<ul>
+<li>往上走，发现sub_400686(&amp;dword_601078, &amp;unk_601060)函数，这个函数对我们的输入进行</li>
+<li>然后就是unk_601060，里面就四个有用的数据，2，2,3,4，所以我们打开sub_400686(&amp;dword_601078, &amp;unk_601060)函数，分析里面的加密代码，然后逆着写脚本,得到输出数据后将16进制数转换为字符串得到flag</li>
+</ul>
+<pre><code>int main()
+{
+    unsigned int xora[6];
+    xora[0] = 3746099070;
+    xora[1] = 550153460;
+    xora[2] = 3774025685;
+    xora[3] = 1548802262;
+    xora[4] = 2652626477;
+    xora[5] = 2230518816;
+    int i = 0,j=0,sum;
+    unsigned int temp[2] = {0};
+    unsigned int data[4] = { 2,2,3,4 };
+    for (i = 0; i &lt; 5; i += 2)
+    {
+        temp[0] = xora[i];
+        temp[1] = xora[i + 1];
 
+        sum = 0x458BCD42 * 64;
+        for (j = 0; j &lt; 64; j++)
+        {
+            temp[1] -= (temp[0] + sum + 20) ^ ((temp[0] &lt;&lt; 6) + 3) ^ ((temp[0] &gt;&gt; 9) + 4) ^ 0x10;
+            temp[0] -= (temp[1] + sum + 11) ^ ((temp[1] &lt;&lt; 6) + 2) ^ ((temp[1] &gt;&gt; 9) + 2) ^ 0x20;
+            sum -= 0x458BCD42;
+        }
+        xora[i] = temp[0];
+        xora[i + 1] = temp[1];
+    }
+    for (i = 0; i &lt; 6; i++)
+    printf("%x",xora[i]);
 
+}
+</code></pre>
+<h2 id="Buuctf-hello-world-go"><a href="#Buuctf-hello-world-go" class="headerlink" title="Buuctf hello_world_go"></a>Buuctf hello_world_go</h2><ul>
+<li><p>这是buuctf里的一道简单题目，<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[MRCTF2020]hello_world_go">hello_world_go</a></p>
+</li>
+<li><p>我们直接把文件的后缀名改为.txt，然后查找flag</p>
+</li>
+</ul>
+<img src="/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/image5.jpg" class="">
 
+<h2 id="Buuctf-level3"><a href="#Buuctf-level3" class="headerlink" title="Buuctf level3"></a>Buuctf level3</h2><ul>
+<li><p>这是buuctf里的一道题目，<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[WUSTCTF2020]level3">level3</a></p>
+</li>
+<li><p>无壳，拖入IDA反汇编分析发现就是变种的base64加密</p>
+</li>
+</ul>
+<img src="/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/image7.jpg" class="">
+
+<ul>
+<li>然后是变化后的base64码表</li>
+</ul>
+<img src="/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/image6.jpg" class="">
+
+<ul>
+<li>解密函数</li>
+</ul>
+<pre><code>import base64
+
+table = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='
+model = list("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=")
+s = "d2G0ZjLwHjS7DmOzZAY0X2lzX3CoZV9zdNOydO9vZl9yZXZlcnGlfD=="
+
+for i in range(10):
+    model[i], model[19-i] = model[19-i], model[i]
+model = ''.join(model)
+table = str.maketrans(model, table)
+print (base64.b64decode(s.translate(table)))
+</code></pre>
+<h2 id="Buuctf-lgnitiMe"><a href="#Buuctf-lgnitiMe" class="headerlink" title="Buuctf lgnitiMe"></a>Buuctf lgnitiMe</h2><ul>
+<li><p>这是buuctf里的一道题目，<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[FlareOn4]IgniteMe">lgniteMe</a></p>
+</li>
+<li><p>查壳发现无壳，所以我们直接放到IDA里面分析，但是发现main函数，既然没有main函数那么我们就看start函数</p>
+</li>
+</ul>
+<img src="/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/image7.jpg" class="">
+
+<ul>
+<li><p>发现就两个函数有用，sub_4010F0和sub_401050</p>
+</li>
+<li><p>sub_4010F0,去掉输入字符中的’\n’和’\r’</p>
+</li>
+</ul>
+<img src="/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/image9.jpg" class="">
+
+<ul>
+<li>sub_401050</li>
+</ul>
+<img src="/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/image10.jpg" class="">
+
+<ul>
+<li>代码的逻辑好理解，问题就是V4的第一个值，即sub_401000不知道看了网上的wp都是用OD动态分析，我目前还不会，先记录一下，等会了再来解决</li>
+</ul>
 
                 
             </div>
@@ -464,7 +560,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://zhangjc00.github.io/2022/03/05/shou-guo-hua-zhi-ling-2/">http://zhangjc00.github.io/2022/03/05/shou-guo-hua-zhi-ling-2/</a>
+                    <a href="http://zhangjc00.github.io/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/">http://zhangjc00.github.io/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -673,9 +769,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2022/03/10/ni-xiang-zhi-lu-de-di-si-zhou/">
                     <div class="card-image">
@@ -693,9 +790,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-03-10
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-10
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -704,6 +801,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -722,13 +820,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/03/05/shou-guo-hua-zhi-ling-1/">
+                <a href="/2022/03/05/shou-guo-hua-zhi-ling-2/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="手过花指令1">
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="手过花指令2">
                         
-                        <span class="card-title">手过花指令1</span>
+                        <span class="card-title">手过花指令2</span>
                     </div>
                 </a>
                 <div class="card-content article-content">

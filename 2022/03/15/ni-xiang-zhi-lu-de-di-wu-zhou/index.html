@@ -387,7 +387,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-03-19
+                    2022-03-15
                 </div>
                 
 
@@ -412,13 +412,13 @@
 <li>这是buuctf里的一道简单题目，<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[SUCTF2019]SignIn">SignIn1</a></li>
 <li>首先看main函数</li>
 </ul>
-<img src="/2022/03/19/ni-xiang-zhi-lu-de-di-wu-zhou/image1.jpg" class=""> 
+<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image1.jpg" class=""> 
 
 <p>其中__gmpz_init_set_str(a,b,c)函数试将b以c进制的形式存储到a中<br>而__gmpz_powm（a,b,c,d)则是将b的c次方模d然后将结果存储到a中，类似于RSA加密，其实这道题就是让求RSA<br>__gmpz_cmp（a,b)则是比较a，b的值<br>sub_96A()函数则是将输入的V8字符串转换为十六进制然后存储到V9中</p>
 <ul>
 <li>所以这道题就是求__gmpz_powm(v6, v6, v5, v4)中的第二个V6，而V4相当于RSA里面的n，第一个V6是密文C，第二个V6是明文M,V5是e<br>所以先用yafu工具分解一下n</li>
 </ul>
-<img src="/2022/03/19/ni-xiang-zhi-lu-de-di-wu-zhou/image2.jpg" class=""> 
+<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image2.jpg" class=""> 
 
 <ul>
 <li>解密脚本如下 ，得到的十六进进制数转换为字符串即可</li>
@@ -445,7 +445,7 @@ print(m)
 <li><p>直接看main函数</p>
 </li>
 </ul>
-<img src="/2022/03/19/ni-xiang-zhi-lu-de-di-wu-zhou/image3.jpg" class=""> 
+<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image3.jpg" class=""> 
 
 <ul>
 <li>分析一下代码，只能说没有比这更简单的了。。。。。,代码如下</li>
@@ -468,18 +468,18 @@ print(m)
 <li><p>查壳发现无壳，32位，所以拖到ida找到main函数，main函数分为两大部分，第一部分如下  </p>
 </li>
 </ul>
-<img src="/2022/03/19/ni-xiang-zhi-lu-de-di-wu-zhou/image4.jpg" class=""> 
+<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image4.jpg" class=""> 
 
 <ul>
 <li>输入一个六位的字符，而后面有atoi()函数，这个函数在C语言里面试将数字转换为字符串，所以得出第一次让输入的是六位的数字，然后通过atoi()函数转换为字符串，再通过strcat()函数将”@DBApp”接到字符串的后面，然后进行加密，再与”6E32D0943418C2C33385BC35A1470250DD8923A9”进行比较。  </li>
 <li>进入加密函数</li>
 </ul>
-<img src="/2022/03/19/ni-xiang-zhi-lu-de-di-wu-zhou/image5.jpg" class=""> 
+<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image5.jpg" class=""> 
 
 <p>一堆看不懂的函数，但是认识一个词hash，所以直接百度搜函数名发现这是CryptCreateHash哈希加密，哈希加密是很多算法放在一起，然后随机抽一个算法来加密，其中决定选取那种加密方式取决于CryptCreateHash()函数的第二个参数<br>查官方文档 <a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows/win32/seccrypto/alg-id">https://docs.microsoft.com/en-us/windows/win32/seccrypto/alg-id</a> 可得第一部分和第二部分所采用的加密方式</p>
-<img src="/2022/03/19/ni-xiang-zhi-lu-de-di-wu-zhou/image6.jpg" class=""> 
+<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image6.jpg" class=""> 
 
-<img src="/2022/03/19/ni-xiang-zhi-lu-de-di-wu-zhou/image7.jpg" class=""> 
+<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image7.jpg" class=""> 
 
 <p>第二个md5加密我知道，但是第一个加密函数还没听说过，所以百度搜索了下发现在线网站只有sh1的加密没有在线解密，所以只能网上找脚本</p>
 <pre><code>import hashlib
@@ -495,19 +495,19 @@ for i in range(100000,999999):
 <ul>
 <li>接下来看第二部分</li>
 </ul>
-<img src="/2022/03/19/ni-xiang-zhi-lu-de-di-wu-zhou/image8.jpg" class=""> 
+<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image8.jpg" class=""> 
 
 <ul>
 <li>输入一个长度为六的字符串，然后将第一部分的 123321@DBApp 加到字符串后面再进行md5加密</li>
 </ul>
-<img src="/2022/03/19/ni-xiang-zhi-lu-de-di-wu-zhou/image9.jpg" class="">
+<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image9.jpg" class="">
 
 <p>直接在线解密md5，得到字符串 ~!3a@0123321@DBApp,得到的前六个字符就是第二次要输入的字符，所以运行CrackRTF程序，两次输入password，发现生成一个rtf文件，打开得到flag</p>
 <h2 id="Buuctf-EasyRe1"><a href="#Buuctf-EasyRe1" class="headerlink" title="Buuctf EasyRe1"></a>Buuctf EasyRe1</h2><ul>
 <li>buuctf里的一道题目，<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[2019%E7%BA%A2%E5%B8%BD%E6%9D%AF]easyRE">easyRE1</a></li>
 <li>打开搜索字符串发现”you found me！”，然后定位所在函数</li>
 </ul>
-<img src="/2022/03/19/ni-xiang-zhi-lu-de-di-wu-zhou/image10.jpg" class=""> 
+<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image10.jpg" class=""> 
 
 <pre><code>a = [73,111,100,108,62,81,110,98,40,111,99,121,127,
      121,46,105,127,100,96,51,119,125,119,101,107,
@@ -518,13 +518,13 @@ for i in range(36):
 print (flag)
 </code></pre>
 <p>跑一下得到提示 </p>
-<img src="/2022/03/19/ni-xiang-zhi-lu-de-di-wu-zhou/image11.jpg" class="">
+<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image11.jpg" class="">
 
 <ul>
 <li>继续往下看你会发现base64加密，兴许你还高兴的直接进行10次base64解密，但是你会发现你中套了，解密后得到的什么也不是</li>
 <li>在百度搜了一下发现主函数下面一个函数才是解题的关键，所以点击主函数下面一个函数</li>
 </ul>
-<img src="/2022/03/19/ni-xiang-zhi-lu-de-di-wu-zhou/image12.jpg" class="">
+<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image12.jpg" class="">
 
 <ul>
 <li>解题脚本如下</li>
@@ -547,12 +547,12 @@ print(v2)
 <li><p>查壳发现无壳，主函数如下</p>
 </li>
 </ul>
-<img src="/2022/03/19/ni-xiang-zhi-lu-de-di-wu-zhou/image13.jpg" class="">
+<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image13.jpg" class="">
 
 <ul>
 <li>根据判断条件得到数据</li>
 </ul>
-<img src="/2022/03/19/ni-xiang-zhi-lu-de-di-wu-zhou/image14.jpg" class="">
+<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image14.jpg" class="">
 
 <ul>
 <li>写出解密脚本如下</li>
@@ -586,27 +586,27 @@ int main()
 <li><p>打开主函数</p>
 </li>
 </ul>
-<img src="/2022/03/19/ni-xiang-zhi-lu-de-di-wu-zhou/image15.jpg" class="">
+<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image15.jpg" class="">
 
 <ul>
 <li>虽然看不太懂，但是发现了Thread，联想java里面所以这道题应该是和多线程有关，第一处是StartAddress()函数，第二处是sub_41119F()函数</li>
 <li>分析StartAddress()函数</li>
 </ul>
-<img src="/2022/03/19/ni-xiang-zhi-lu-de-di-wu-zhou/image16.jpg" class="">
+<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image16.jpg" class="">
 
-<img src="/2022/03/19/ni-xiang-zhi-lu-de-di-wu-zhou/image17.jpg" class="">
+<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image17.jpg" class="">
 
 <p>分析一下发现是判断字符大小写然后进行表替换，表为QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbn</p>
 <ul>
 <li>分析sub_41119F()函数</li>
 </ul>
-<img src="/2022/03/19/ni-xiang-zhi-lu-de-di-wu-zhou/image18.jpg" class="">
+<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image18.jpg" class="">
 
 <p>对dword_418008变量进行-1操作，其中dword_418008变量为 1Dh</p>
 <ul>
 <li>分析sub_411190()函数</li>
 </ul>
-<img src="/2022/03/19/ni-xiang-zhi-lu-de-di-wu-zhou/image19.jpg" class="">
+<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image19.jpg" class="">
 
 <p>判断变换后的字符串是否等于 TOiZiZtOrYaToUwPnToBsOaOapsyS ，但这里有一点很奇怪，在最开始判断里面0 – 1D 有30个字符，但后来sub_41119F()函数运行后对dword_418008变量进行-1操作，之后就是0 – 1C 对29个字符进行操作</p>
 <ul>
@@ -656,7 +656,7 @@ print(flag)
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://zhangjc00.github.io/2022/03/19/ni-xiang-zhi-lu-de-di-wu-zhou/">http://zhangjc00.github.io/2022/03/19/ni-xiang-zhi-lu-de-di-wu-zhou/</a>
+                    <a href="http://zhangjc00.github.io/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/">http://zhangjc00.github.io/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -870,7 +870,7 @@ print(flag)
                 <i class="far fa-dot-circle"></i>&nbsp;本篇
             </div>
             <div class="card">
-                <a href="/2022/03/19/ni-xiang-zhi-lu-de-di-wu-zhou/">
+                <a href="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/">
                     <div class="card-image">
                         
                         
@@ -887,7 +887,7 @@ print(flag)
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-19
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-15
                             </span>
                         <span class="publish-author">
                             
@@ -942,6 +942,14 @@ print(flag)
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Reverse/">
+                        <span class="chip bg-color">Reverse</span>
+                    </a>
+                    
                 </div>
                 
             </div>

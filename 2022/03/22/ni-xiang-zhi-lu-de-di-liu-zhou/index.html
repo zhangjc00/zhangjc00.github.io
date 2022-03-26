@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="逆向之路的第五周, 开心0v0超人">
+    <meta name="keywords" content="逆向之路的第六周, 开心0v0超人">
     <meta name="description" content="这是很好很长的一生，未来很好，你也是！">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>逆向之路的第五周 | 开心0v0超人</title>
+    <title>逆向之路的第六周 | 开心0v0超人</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -250,12 +250,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">逆向之路的第五周</h1>
+                    <h1 class="description center-align post-title">逆向之路的第六周</h1>
                 </div>
             </div>
         </div>
@@ -387,7 +387,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-03-15
+                    2022-03-22
                 </div>
                 
 
@@ -408,227 +408,178 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="Buuctf-SignIn1"><a href="#Buuctf-SignIn1" class="headerlink" title="Buuctf SignIn1"></a>Buuctf SignIn1</h2><ul>
-<li>这是buuctf里的一道简单题目，<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[SUCTF2019]SignIn">SignIn1</a></li>
-<li>首先看main函数</li>
+                <h2 id="Buuctf-usualCrypto"><a href="#Buuctf-usualCrypto" class="headerlink" title="Buuctf usualCrypto"></a>Buuctf usualCrypto</h2><ul>
+<li>一道Buuctf里面的题目，<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[ACTF%E6%96%B0%E7%94%9F%E8%B5%9B2020]usualCrypt">usualCrypto</a>,查壳发现无壳32位，打开main函数</li>
 </ul>
-<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image1.jpg" class=""> 
-
-<p>其中__gmpz_init_set_str(a,b,c)函数试将b以c进制的形式存储到a中<br>而__gmpz_powm（a,b,c,d)则是将b的c次方模d然后将结果存储到a中，类似于RSA加密，其实这道题就是让求RSA<br>__gmpz_cmp（a,b)则是比较a，b的值<br>sub_96A()函数则是将输入的V8字符串转换为十六进制然后存储到V9中</p>
-<ul>
-<li>所以这道题就是求__gmpz_powm(v6, v6, v5, v4)中的第二个V6，而V4相当于RSA里面的n，第一个V6是密文C，第二个V6是明文M,V5是e<br>所以先用yafu工具分解一下n</li>
-</ul>
-<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image2.jpg" class=""> 
+<img src="/2022/03/22/ni-xiang-zhi-lu-de-di-liu-zhou/image1.jpg" class=""> 
 
 <ul>
-<li>解密脚本如下 ，得到的十六进进制数转换为字符串即可</li>
+<li><p>逻辑很简单，就是输入一串字符，然后通过sub_401080()函数处理后与字符串byte_40E0E4进行比较，其中字符串byte_40E0E4为”zMXHz3TIgnxLxJhFAdtZn2fFk3lYCrtPC2l9”</p>
+</li>
+<li><p>进入sub_401080()函数</p>
+</li>
 </ul>
-<pre><code>from Crypto.Util.number import *
-from gmpy2 import *
+<img src="/2022/03/22/ni-xiang-zhi-lu-de-di-liu-zhou/image2.jpg" class=""> 
+<img src="/2022/03/22/ni-xiang-zhi-lu-de-di-liu-zhou/image3.jpg" class=""> 
 
-e = 65537
-n = 103461035900816914121390101299049044413950405173712170434161686539878160984549
-c = 0xad939ff59f6e70bcbfad406f2494993757eee98b91bc244184a377520d06fc35
+<ul>
+<li>大致看一下是进行base64加密，但是加密之前和之后分别有一个函数，加密之前是sub_401000()函数</li>
+</ul>
+<img src="/2022/03/22/ni-xiang-zhi-lu-de-di-liu-zhou/image4.jpg" class=""> 
 
-p = 366669102002966856876605669837014229419
-q = 282164587459512124844245113950593348271
+<p>是对base64的标准字符表进行修改，这里BASE64_table_40E0A0变量其实不单单只是A–J十个字符，应该是A–Za–z1–9+/,</p>
+<ul>
+<li>加密之后是sub_401030()函数</li>
+</ul>
+<img src="/2022/03/22/ni-xiang-zhi-lu-de-di-liu-zhou/image5.jpg" class=""> 
 
-d = invert( e,(p-1)*(q-1) )
-
-m = pow(c,d,p*q)
-
-print(m)
+<p>对加密之后的字符进行大小写转换</p>
+<ul>
+<li>所以解密脚本如下</li>
+</ul>
+<pre><code>import base64
+table = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='
+model = list("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=")
+s = "zMXHz3TIgnxLxJhFAdtZn2fFk3lYCrtPC2l9".swapcase()
+for i in range(6,15):
+    model[i], model[10 + i ] = model[10 + i], model[i]
+model = ''.join(model)
+table = str.maketrans(model, table)
+print (base64.b64decode(s.translate(table)))
 </code></pre>
-<h2 id="Buuctf-Level1"><a href="#Buuctf-Level1" class="headerlink" title="Buuctf Level1"></a>Buuctf Level1</h2><ul>
-<li><p>这是buuctf里的一道简单题目，<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[WUSTCTF2020]level1">Level1</a> </p>
-</li>
-<li><p>直接看main函数</p>
-</li>
+<h2 id="Buuctf-IgniteMe"><a href="#Buuctf-IgniteMe" class="headerlink" title="Buuctf IgniteMe"></a>Buuctf IgniteMe</h2><ul>
+<li>一道Buuctf里面的题目，<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[FlareOn4]IgniteMe">IgniteMe</a>,查壳发现无壳32位，寻找main函数，发现没有main函数所以打开start函数</li>
 </ul>
-<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image3.jpg" class=""> 
+<img src="/2022/03/22/ni-xiang-zhi-lu-de-di-liu-zhou/image6.jpg" class=""> 
 
 <ul>
-<li>分析一下代码，只能说没有比这更简单的了。。。。。,代码如下</li>
+<li>分析一下，主要逻辑就是你输入字符串，程序调用sub_4010F0()函数对输入的字符串进行处理，然后通过sub_401050()函数进行判断</li>
+<li>先进入sub_4010F0()函数</li>
 </ul>
-<pre><code>int arry[19] = {198,232,816,200,1536,300,6144,984,51200,570,92160,1200,565248,756,1474560,800,6291456,1782,65536000};
-    for( int i=1;i&lt;=19;i++)
-    {
-        if( (i &amp; 1) != 0 )
-            arry[i-1] = ( arry[i-1] &gt;&gt; i ) ;
-        else
-            arry[i-1] = arry[i-1] / i ;
+<img src="/2022/03/22/ni-xiang-zhi-lu-de-di-liu-zhou/image7.jpg" class=""> 
 
-    }
-    for( int i=0;i&lt;19;i++)
-        cout &lt;&lt; char(arry[i]) ;
+<p>sub_4010F0()函数就是去除输入字符串中的换行符和回车符</p>
+<ul>
+<li>进入sub_401050()函数</li>
+</ul>
+<img src="/2022/03/22/ni-xiang-zhi-lu-de-di-liu-zhou/image8.jpg" class=""> 
+
+<p>也没有什么复杂的逻辑，就是把字符串从尾部开始异或，每一项都为当前项和其后一项异或的值，其中最后一项和V4进行异或</p>
+<ul>
+<li>这里唯一的困惑就是V4的值，V4的值是通过函数sub_401000()产生的，函数反汇编后就一行大概是移位的操作，我们可以用IDA直接调试出来</li>
+</ul>
+<img src="/2022/03/22/ni-xiang-zhi-lu-de-di-liu-zhou/image9.jpg" class=""> 
+
+<p>在sub_401000()中设置一个断点，然后单步执行最后得到寄存器EAX中的值为4，即V4的值为4</p>
+<ul>
+<li>所以解题脚本如下</li>
+</ul>
+<pre><code>byte_403000 = [0x0D,0x26,0x49, 0x45, 0x2A, 0x17, 0x78, 0x44, 0x2B, 0x6C, 0x5D,0x5E, 0x45, 0x12, 0x2F, 0x17, 0x2B, 0x44, 0x6F, 0x6E, 0x56, 0x9,0x5F, 0x45, 0x47, 0x73, 0x26, 0x0A, 0x0D, 0x13, 0x17, 0x48, 0x42,0x1, 0x40, 0x4D, 0x0C, 0x2, 0x69, 0x0]
+V4 = 0x4
+flag = ""
+len1 = len(byte_403000) - 1
+byte_403000[len1] = byte_403000[len1] ^ V4
+flag += chr(byte_403000[len1])
+for i in range( len1 ):
+    byte_403000[len1 - i - 1] = byte_403000[len1-i] ^ byte_403000[len1 - i - 1]
+    flag += chr(byte_403000[len1-i-1])
+print(flag[::-1])
 </code></pre>
-<h2 id="Buuctf-CrackRtf"><a href="#Buuctf-CrackRtf" class="headerlink" title="Buuctf CrackRtf"></a>Buuctf CrackRtf</h2><ul>
-<li><p>buuctf里的一道题目，<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#CrackRTF">CrackRtf</a></p>
-</li>
-<li><p>查壳发现无壳，32位，所以拖到ida找到main函数，main函数分为两大部分，第一部分如下  </p>
-</li>
-</ul>
-<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image4.jpg" class=""> 
-
-<ul>
-<li>输入一个六位的字符，而后面有atoi()函数，这个函数在C语言里面试将数字转换为字符串，所以得出第一次让输入的是六位的数字，然后通过atoi()函数转换为字符串，再通过strcat()函数将”@DBApp”接到字符串的后面，然后进行加密，再与”6E32D0943418C2C33385BC35A1470250DD8923A9”进行比较。  </li>
-<li>进入加密函数</li>
-</ul>
-<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image5.jpg" class=""> 
-
-<p>一堆看不懂的函数，但是认识一个词hash，所以直接百度搜函数名发现这是CryptCreateHash哈希加密，哈希加密是很多算法放在一起，然后随机抽一个算法来加密，其中决定选取那种加密方式取决于CryptCreateHash()函数的第二个参数<br>查官方文档 <a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows/win32/seccrypto/alg-id">https://docs.microsoft.com/en-us/windows/win32/seccrypto/alg-id</a> 可得第一部分和第二部分所采用的加密方式</p>
-<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image6.jpg" class=""> 
-
-<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image7.jpg" class=""> 
-
-<p>第二个md5加密我知道，但是第一个加密函数还没听说过，所以百度搜索了下发现在线网站只有sh1的加密没有在线解密，所以只能网上找脚本</p>
-<pre><code>import hashlib
-flag2 = "@DBApp"
-for i in range(100000,999999):
-    h2 = hashlib.sha1((str(i)+flag2).encode("utf-8"))
-    flags = h2.hexdigest()
-    if "6e32d0943418c2c33385bc35a1470250dd8923a9" == flags:
-            print (str(i)+flag2)
-            print(flags)
-</code></pre>
-<p>跑一下得到第一部分的密码 123321@DBApp </p>
-<ul>
-<li>接下来看第二部分</li>
-</ul>
-<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image8.jpg" class=""> 
-
-<ul>
-<li>输入一个长度为六的字符串，然后将第一部分的 123321@DBApp 加到字符串后面再进行md5加密</li>
-</ul>
-<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image9.jpg" class="">
-
-<p>直接在线解密md5，得到字符串 ~!3a@0123321@DBApp,得到的前六个字符就是第二次要输入的字符，所以运行CrackRTF程序，两次输入password，发现生成一个rtf文件，打开得到flag</p>
-<h2 id="Buuctf-EasyRe1"><a href="#Buuctf-EasyRe1" class="headerlink" title="Buuctf EasyRe1"></a>Buuctf EasyRe1</h2><ul>
-<li>buuctf里的一道题目，<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[2019%E7%BA%A2%E5%B8%BD%E6%9D%AF]easyRE">easyRE1</a></li>
-<li>打开搜索字符串发现”you found me！”，然后定位所在函数</li>
-</ul>
-<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image10.jpg" class=""> 
-
-<pre><code>a = [73,111,100,108,62,81,110,98,40,111,99,121,127,
-     121,46,105,127,100,96,51,119,125,119,101,107,
-     57,123,105,121,61,126,121,76,64,69,67]
-flag=""
-for i in range(36):
-    flag+=chr(a[i]^i)
-print (flag)
-</code></pre>
-<p>跑一下得到提示 </p>
-<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image11.jpg" class="">
-
-<ul>
-<li>继续往下看你会发现base64加密，兴许你还高兴的直接进行10次base64解密，但是你会发现你中套了，解密后得到的什么也不是</li>
-<li>在百度搜了一下发现主函数下面一个函数才是解题的关键，所以点击主函数下面一个函数</li>
-</ul>
-<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image12.jpg" class="">
-
-<ul>
-<li>解题脚本如下</li>
-</ul>
-<pre><code>v5 = ''
-enc1 = 'flag'
-v2 = ''
-enc = [0x40,0x35,0x20,0x56,0x5D,0x18,0x22,0x45,0x17,0x2F,0x24,0x6E,0x62,0x3C,0x27,0x54,0x48,0x6C,0x24,0x6E,0x72,0x3C,0x32,0x45,0x5B]
-for i in range(4):
-    v5 += chr(enc[i] ^ ord(enc1[i]))
-print (v5)
-
-for i in range(len(enc)):
-    v2 += chr(enc[i] ^ ord(v5[i%4]))
-print(v2)
-</code></pre>
-<h2 id="Buuctf-Transform"><a href="#Buuctf-Transform" class="headerlink" title="Buuctf Transform"></a>Buuctf Transform</h2><ul>
-<li><p>buuctf里的一道题目，<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[MRCTF2020]Transform">Transform</a></p>
-</li>
-<li><p>查壳发现无壳，主函数如下</p>
-</li>
-</ul>
-<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image13.jpg" class="">
-
-<ul>
-<li>根据判断条件得到数据</li>
-</ul>
-<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image14.jpg" class="">
-
-<ul>
-<li>写出解密脚本如下</li>
+<h2 id="Buuctf-Cr0ssfun"><a href="#Buuctf-Cr0ssfun" class="headerlink" title="Buuctf Cr0ssfun"></a>Buuctf Cr0ssfun</h2><ul>
+<li>一道Buuctf里面的题目，<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[WUSTCTF2020]Cr0ssfun">Cr0ssfun</a>,太简单了所以直接贴代码</li>
 </ul>
 <pre><code>#include &lt;bits/stdc++.h&gt;
+
 using namespace std;
+
 int main()
 {
-    int i;
-    char c[33];
-    char a[]= {0x09,0x0a,0x0f,0x17,0x07,0x18,0x0c,0x06,0x01,0x10,0x03,0x11,0x20,0x1d,
-    0x0b,0x1e,0x1b,0x16,0x04,0x0d,0x13,0x14,0x15,0x02,0x19,0x05,0x1f,0x08,0x12,0x1a,0x1c,0x0e,0} ;
-    char b[]= {0x67,0x79,0x7b,0x7f,0x75,0x2b,0x3c,0x52,0x53,0x79,0x57,0x5e,0x5d,0x42,
-    0x7b,0x2d,0x2a,0x66,0x42,0x7e,0x4c,0x57,0x79,0x41,0x6b,0x7e,0x65,0x3c,0x5c,0x45,0x6f,0x62,0x4d};
-    for(i=0; i&lt;=32; i++)
-    {
-        b[i]=b[i]^a[i];
-    }
-    for(i=0; i&lt;=32; i++)
-    {
-        c[a[i]]=b[i];
-    }
-    for(i=0; i&lt;=32; i++)
-        cout &lt;&lt; c[i] ;
+    int a1[40] ;
+    a1[1] = 99  ;
+    a1[25] = 64 ;
+    a1[27] = 101;
+    a1[4] = 50 ;
+    a1[17] = 114 ;
+    a1[29] = 102 ;
+    a1[17] = 114 ;
+    a1[24] = 95;
+    a1[2] = 116;
+    a1[9] = 99;
+    a1[32] = 125;
+    a1[19] = 118;
+    a1[5] = 48;
+    a1[14] = 110;
+    a1[15] = 100;
+    a1[8] = 123;
+    a1[18] = 51;
+    a1[28] = 95;
+    a1[21] = 114;
+    a1[0] = 119 ;
+    a1[6] = 50 ;
+    a1[22] = 115 ;
+    a1[31] = 110 ;
+    a1[12] = 95;
+    a1[7] = 48;
+    a1[16] = 95;
+    a1[11] = 112;
+    a1[23] = 101;
+    a1[30] = 117;
+    a1[10] = 112;
+    a1[13] = 64;
+    a1[3] = 102;
+    a1[26] = 114;
+    a1[20] = 101;
+    for( int i=0;i&lt;= 33 ;i++)
+        cout &lt;&lt; char(a1[i]) ;
     return 0;
 }
 </code></pre>
-<h2 id="Buuctf-Youngter-drive"><a href="#Buuctf-Youngter-drive" class="headerlink" title="Buuctf Youngter-drive"></a>Buuctf Youngter-drive</h2><ul>
-<li><p>buuctf里的一道题目，<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#Youngter-drive">Youngter-drive</a></p>
+<h2 id="Buuctf-Overlong1"><a href="#Buuctf-Overlong1" class="headerlink" title="Buuctf Overlong1"></a>Buuctf Overlong1</h2><ul>
+<li>一道Buuctf里面的题目，<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[FlareOn6]Overlong">Overlong1</a>，查壳发现无壳，32位，所以我们放到ida里，依旧是没有main函数，所以我们打开start函数</li>
+</ul>
+<img src="/2022/03/22/ni-xiang-zhi-lu-de-di-liu-zhou/image10.jpg" class=""> 
+
+<ul>
+<li>主要逻辑也很容易懂，就是对unk_402008这个变量进行sub_401160()函数处理然后输出，输出的结果是</li>
+</ul>
+<img src="/2022/03/22/ni-xiang-zhi-lu-de-di-liu-zhou/image11.jpg" class=""> 
+
+<ul>
+<li><p>仔细观察发现这条语句后面有个冒号 “:” ,估计是后面还有其他东西没有输出来，而再回到start()函数，unk_402008这个变量长度是0xAF位,而程序只处理了0x1C位，所以应该就是让我们修改二进制代码将unk_402008这个变量全部处理一下即可</p>
 </li>
-<li><p>打开主函数</p>
+<li><p>先开始我直接用ida修改代码，发现出现错误</p>
 </li>
 </ul>
-<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image15.jpg" class="">
+<img src="/2022/03/22/ni-xiang-zhi-lu-de-di-liu-zhou/image12.jpg" class=""> 
 
 <ul>
-<li>虽然看不太懂，但是发现了Thread，联想java里面所以这道题应该是和多线程有关，第一处是StartAddress()函数，第二处是sub_41119F()函数</li>
-<li>分析StartAddress()函数</li>
+<li>我也不知道为什么。。。所以就用OD去修改试了下,将28即0x1C修改为0xAF,运行一下发现得到flag</li>
 </ul>
-<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image16.jpg" class="">
+<img src="/2022/03/22/ni-xiang-zhi-lu-de-di-liu-zhou/image13.jpg" class=""> 
 
-<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image17.jpg" class="">
-
-<p>分析一下发现是判断字符大小写然后进行表替换，表为QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbn</p>
 <ul>
-<li>分析sub_41119F()函数</li>
+<li>当然这道题其实你要是分析sub_401160()函数的话然后自己再对完整的unk_402008变量进行处理也能得到结果</li>
 </ul>
-<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image18.jpg" class="">
-
-<p>对dword_418008变量进行-1操作，其中dword_418008变量为 1Dh</p>
-<ul>
-<li>分析sub_411190()函数</li>
+<h2 id="Buuctf-hamburger-competition1"><a href="#Buuctf-hamburger-competition1" class="headerlink" title="Buuctf hamburger competition1"></a>Buuctf hamburger competition1</h2><ul>
+<li>一道Buuctf里面的题目，<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges#[BJDCTF2020]BJD%20hamburger%20competition">hamburger competition1</a>,是一种之前从来没有见过的题型，网上搜索了解了是Unity3D类安卓游戏逆向，这种题目的做法参考了博客 <a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44058342/article/details/87940908">简单Unity3D类安卓游戏逆向思路</a>，本题就是用ILSpy软件打开附件BJD hamburger competition_Data\Managed目录下的Assembly-CSarp.dll文件</li>
 </ul>
-<img src="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/image19.jpg" class="">
+<img src="/2022/03/22/ni-xiang-zhi-lu-de-di-liu-zhou/image14.jpg" class=""> 
 
-<p>判断变换后的字符串是否等于 TOiZiZtOrYaToUwPnToBsOaOapsyS ，但这里有一点很奇怪，在最开始判断里面0 – 1D 有30个字符，但后来sub_41119F()函数运行后对dword_418008变量进行-1操作，之后就是0 – 1C 对29个字符进行操作</p>
 <ul>
-<li>脚本如下</li>
+<li>因为对这个软件一点也不了解，做这种类型的的题目也没有经验，所以一时间不知道如何下手，我就在搜索里面尝试性的输入了BJDCTF，然后找到了关键代码所在的地方</li>
 </ul>
-<pre><code>off_418000 = "QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm"
-off_418004 = "TOiZiZtOrYaToUwPnToBsOaOapsyS"
-flag=''
-for i in range(len(off_418004)):
-    if i %2 == 0:
-        flag += off_418004[i]
-        continue
-    for j,k in enumerate(off_418000):
-        if off_418004[i] == k:
-            if chr(j+38).isupper():
-                flag += chr(j+38)
-            else:
-                flag += chr(j+96)
-print(flag)
-</code></pre>
+<img src="/2022/03/22/ni-xiang-zhi-lu-de-di-liu-zhou/image15.jpg" class=""> 
+
 <ul>
-<li>但是这里发只有29位，正是sub_41119F()函数运行后对dword_418008变量进行-1操作导致的，所以最后一个字符只能一个个的爆破，但直接百度找wp得到最后一个字符位”E”</li>
+<li><p>逻辑很清晰了，就是如果str字符串用Sha1()函数加密后为DD01903921EA24941C26A48F2CEC24E0BB0E8CC7，那么flag就是str字符串用md5()函数加密，其中点进去查看会发现Sha1函数就是Sha1加密，而md5()函数是md5加密然后取前二十个字符</p>
+</li>
+<li><p>所以对DD01903921EA24941C26A48F2CEC24E0BB0E8CC7进行Sha1结果为1001，再对1001进行md5加密，结果有四种</p>
+</li>
+</ul>
+<img src="/2022/03/22/ni-xiang-zhi-lu-de-di-liu-zhou/image16.jpg" class=""> 
+
+<ul>
+<li>分别取前20个字符套上flag{}去提交，发现最终的答案为flag{B8C37E33DEFDE51CF91E}</li>
 </ul>
 
                 
@@ -656,7 +607,7 @@ print(flag)
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://zhangjc00.github.io/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/">http://zhangjc00.github.io/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/</a>
+                    <a href="http://zhangjc00.github.io/2022/03/22/ni-xiang-zhi-lu-de-di-liu-zhou/">http://zhangjc00.github.io/2022/03/22/ni-xiang-zhi-lu-de-di-liu-zhou/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -865,9 +816,10 @@ print(flag)
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2022/03/22/ni-xiang-zhi-lu-de-di-liu-zhou/">
                     <div class="card-image">
@@ -885,9 +837,9 @@ print(flag)
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-03-22
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-22
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -896,6 +848,7 @@ print(flag)
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -914,13 +867,13 @@ print(flag)
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/03/12/hui-bian-dui-zhan-ping-heng/">
+                <a href="/2022/03/15/ni-xiang-zhi-lu-de-di-wu-zhou/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="汇编堆栈平衡">
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="逆向之路的第五周">
                         
-                        <span class="card-title">汇编堆栈平衡</span>
+                        <span class="card-title">逆向之路的第五周</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -931,7 +884,7 @@ print(flag)
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-12
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-15
                             </span>
                         <span class="publish-author">
                             

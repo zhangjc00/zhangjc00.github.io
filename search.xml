@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>IDC</title>
+      <link href="/2022/04/15/idc/"/>
+      <url>/2022/04/15/idc/</url>
+      
+        <content type="html"><![CDATA[<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><ul><li>IDC语言是IDA的一种脚本引擎，因为语法和C语言很相似，所以叫做IDC，在IDC中用shift + F2打开窗口编写</li></ul><h3 id="变量类型"><a href="#变量类型" class="headerlink" title="变量类型"></a>变量类型</h3><ul><li>IDC中没有明确的变量类型，所有局部变量都是通过关键字auto引入的，而全局变量则是通过关键字extern引入的，但是不能在声明全局变量的时候给其赋值</li></ul><p>局部变量</p><pre><code>auto a,b,c ; // 没有初始化auto a = 1 ; //初始化</code></pre><p>全局变量</p><pre><code>extern out;static main(){    extern in;    outsideGlobal = “Global”; // 自动识别为字符类型    insideGlobal = 1;}</code></pre><h3 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h3><ul><li>IDC中几乎可以用C语言中的所有逻辑运算符</li></ul><h3 id="字符处理"><a href="#字符处理" class="headerlink" title="字符处理"></a>字符处理</h3><pre><code>auto str = “Hello World!”;auto s1, s2, s3, s4;s1 = str[7:9];          //'or'  [a:b]从位置a开始到位置b，但是不包含位置b上的字符s2 = str[ :6];           //'Hello 's3 = str[10: ];           //'d!'s4 = str[5];           //' '</code></pre><h3 id="输出语句"><a href="#输出语句" class="headerlink" title="输出语句"></a>输出语句</h3><pre><code>auto i = 1;Message(“i = %d\n”, i）;</code></pre><h3 id="常用函数"><a href="#常用函数" class="headerlink" title="常用函数"></a>常用函数</h3><pre><code>1）void PatchByte(long addr , long val) 设置虚拟地址addr处的一个字节值，PatchByte可更换为PatchWord，PatchDword设置虚拟地址addr处的2字节和4字节值。2）long Byte（long addr） 从虚拟地址addr读取一个字节值，Byte可更换为Word，Dword读取2字节和4字节值。3）void Message（string format , …）,在输出窗口打印一条格式化消息。4）void print（…），在输出窗口中打印每个参数的字符串表示形式。5）long atol（string val），将10进制val转化成对应整数值。6）long xtol（string val），将16进制val转化成对应整数值。7）long ord（string ch），返回单字符字符串ch的ASCII值。8）string Name（long addr），返回与给定地址有关的名称，如果该位置没有名称，则返回空字符串。</code></pre><h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>IDC不支持switch语句</p><pre><code>switch(){    case 1: ...}</code></pre><p>for 语句不支持复合运算符</p><pre><code>for(auto i=0;i&lt;5;i+=1)  // 错误for(auto i=0;i&lt;5;i++)   //正确</code></pre><h2 id="常用函数-1"><a href="#常用函数-1" class="headerlink" title="常用函数"></a>常用函数</h2><p>参考这篇博客 ： <a href="https://blog.csdn.net/CSNN2019/article/details/115349108">https://blog.csdn.net/CSNN2019/article/details/115349108</a></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Reverse </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>逆向8</title>
       <link href="/2022/04/13/ni-xiang-8/"/>
       <url>/2022/04/13/ni-xiang-8/</url>
